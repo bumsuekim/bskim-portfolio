@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#dad9e1",
+                    "surface-container-low": "#f4f3fa",
+                    "on-secondary-fixed-variant": "#38485d",
+                    "on-primary-fixed": "#00164e",
+                    "surface": "#faf8ff",
+                    "on-primary-container": "#90a8ff",
+                    "on-primary": "#ffffff",
+                    "primary": "#00236f",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-container": "#6e2c00",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed-dim": "#ffb691",
+                    "on-error": "#ffffff",
+                    "inverse-surface": "#2f3036",
+                    "outline-variant": "#c5c5d3",
+                    "primary-container": "#1e3a8a",
+                    "tertiary-fixed": "#ffdbcb",
+                    "secondary-container": "#d0e1fb",
+                    "on-error-container": "#93000a",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed": "#d3e4fe",
+                    "surface-container-high": "#e9e7ef",
+                    "on-secondary-container": "#54647a",
+                    "surface-tint": "#4059aa",
+                    "primary-fixed": "#dce1ff",
+                    "on-tertiary-fixed": "#341100",
+                    "on-tertiary-container": "#f39461",
+                    "outline": "#757682",
+                    "on-background": "#1a1b21",
+                    "secondary-fixed-dim": "#b7c8e1",
+                    "on-secondary-fixed": "#0b1c30",
+                    "secondary": "#505f76",
+                    "tertiary": "#4b1c00",
+                    "primary-fixed-dim": "#b6c4ff",
+                    "surface-variant": "#e3e1e9",
+                    "on-tertiary-fixed-variant": "#773205",
+                    "surface-bright": "#faf8ff",
+                    "surface-container": "#eeedf4",
+                    "surface-container-highest": "#e3e1e9",
+                    "background": "#faf8ff",
+                    "on-primary-fixed-variant": "#264191",
+                    "inverse-on-surface": "#f1f0f7",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#b6c4ff",
+                    "on-surface": "#1a1b21",
+                    "on-surface-variant": "#444651"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "container-max": "1200px",
+                    "xl": "40px",
+                    "gutter": "24px",
+                    "2xl": "64px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "md": "16px",
+                    "sm": "8px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "display-lg-mobile": ["Inter"],
+                    "headline-md-mobile": ["Inter"],
+                    "title-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["30px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-md-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #faf8ff;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-nav {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 glass-nav border-b border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-center h-16 px-gutter max-w-container-max mx-auto">
+<span class="font-title-lg text-title-lg font-bold text-primary">Portfolio</span>
+<div class="hidden md:flex gap-md items-center">
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors" href="#">Home</a>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors" href="#">About</a>
+<a class="font-label-sm text-label-sm text-primary border-b-2 border-primary pb-1" href="#">Projects</a>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors" href="#">Contact</a>
+</div>
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<button class="hidden md:block bg-primary text-on-primary px-md py-sm rounded-lg font-label-sm text-label-sm transition-transform active:scale-95">Admin</button>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="flex-grow pt-24 pb-xl px-gutter max-w-container-max mx-auto w-full">
+<!-- Section Header -->
+<header class="mb-xl text-center md:text-left">
+<h1 class="font-headline-md-mobile text-headline-md-mobile md:font-headline-md md:text-headline-md text-on-surface mb-xs">Featured Projects</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">기술적 문제 해결과 비즈니스 가치 창출에 집중한 프로젝트 목록입니다.</p>
+</header>
+<!-- Project Grid (Mobile 1-column focus) -->
+<div class="grid grid-cols-1 gap-lg">
+<!-- Project Card 1 (Award Winner) -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm hover:shadow-md transition-all group">
+<div class="relative h-56 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean and modern e-commerce dashboard interface showing conversion rate analytics and user behavior heatmaps. The design uses a professional deep indigo and soft white palette with subtle gray accents. Soft studio lighting highlights the sleek UI elements, conveying a sense of high-tech precision and professional trust. Minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDphNi3jWTbHQQkZ5hnCaQzb1yQ1MwFxuKnH6d4KpvRZohliFZORc5ZuvDoDQdCTFVToh0ihKO9oD7PlMyld2mT-nyzCFAiVGPhmUCFop90lhjAfrFstObak_D_FJPw9vSG_FaDI_sNoUUjOXxJQ0ZAzC6Ql2WsoucvUQk3t1cK2ufpgT_jPgWQzgoAQ-Bvl7_Zct4mHGxN0I-rnuD4gjyVYwaPSajrsfXXmEwelLBHYD9j3adhBLzh"/>
+<div class="absolute top-md left-md">
+<span class="bg-primary text-on-primary px-sm py-xs rounded-full font-label-sm text-[12px] flex items-center gap-1 shadow-lg">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+                            Best Performance
+                        </span>
+</div>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-sm">
+<h2 class="font-title-lg text-title-lg text-on-surface">E-commerce Redesign</h2>
+<span class="text-primary font-bold text-label-sm">+15% Growth</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">결제 전환율 개선을 위한 UI 최적화 프로젝트입니다. 사용자 이탈 지점을 분석하여 결제 프로세스를 간소화했습니다.</p>
+<div class="flex flex-wrap gap-sm mb-lg">
+<span class="bg-secondary-container text-on-secondary-container px-sm py-xs rounded-lg font-label-sm text-[12px]">React</span>
+<span class="bg-secondary-container text-on-secondary-container px-sm py-xs rounded-lg font-label-sm text-[12px]">Node.js</span>
+<span class="bg-secondary-container text-on-secondary-container px-sm py-xs rounded-lg font-label-sm text-[12px]">TypeScript</span>
+</div>
+<button class="w-full py-md bg-primary text-on-primary rounded-xl font-label-sm text-label-sm hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
+                        자세히 보기
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Project Card 2 -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm hover:shadow-md transition-all group">
+<div class="relative h-56 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A mobile app interface for a fitness tracking platform, featuring dark mode with vibrant neon indigo highlights. The visuals show exercise progress charts and community leaderboards. The lighting is crisp and energetic, emphasizing a modern tech-forward lifestyle. The composition is balanced and professional, aligning with a corporate-modern design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu5rWLcDrGIz6l8APIpjUVLht2gtCK1tl426ZWXevi7N8xdymU1l0EdNH-YH28fK6gWxqChRTApqPo5hsYLcLMOPllv3Cc7WLm0PKVYVtO3wNrq8PVC4hPo_ZODWNLleIlhzUMFFWiidIXrz_IxXS5F2TeJ_mfgA8kxMH31tNNMamAKq-x2zfMp7QL7cvVkfQRsDeaIczGJxPm3BprLDBdhuikLDBLYQy0wgpqThV2aerFAlWO1MG9"/>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-sm">
+<h2 class="font-title-lg text-title-lg text-on-surface">Fitness Tracker App</h2>
+<span class="text-primary font-bold text-label-sm">UX Excellence</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">개인 맞춤형 운동 루틴 및 진행도 관리 플랫폼의 디자인 및 프론트엔드 개발을 진행했습니다.</p>
+<div class="flex flex-wrap gap-sm mb-lg">
+<span class="bg-secondary-container text-on-secondary-container px-sm py-xs rounded-lg font-label-sm text-[12px]">Next.js</span>
+<span class="bg-secondary-container text-on-secondary-container px-sm py-xs rounded-lg font-label-sm text-[12px]">Tailwind CSS</span>
+</div>
+<button class="w-full py-md bg-surface-container-high text-on-surface rounded-xl font-label-sm text-label-sm hover:bg-surface-dim transition-colors flex justify-center items-center gap-2">
+                        자세히 보기
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Project Card 3 (Award Winner) -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant/30 overflow-hidden shadow-sm hover:shadow-md transition-all group">
+<div class="relative h-56 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A sophisticated data visualization dashboard for a fintech company. Complex financial charts are displayed with a minimalist aesthetic using deep blue and cool gray tones. The image captures the essence of professional analytics and secure technology. Soft ambient lighting creates a calm yet focused atmosphere, highlighting the precision of the data display." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSwRhyZTpZidXHt9pOqo5SV_fSPhWhBSGU_kH7r3xwNdtjlfnVnnR3ejmTQ0Eu6swMWVDMQRqeB3psAQU9QICcC8NQqLnWCTV5wibJXAugMIJg2TzZd5KQQtgBFH0yaUU5IoU0XNUNruE_EJ06Pi0roGhSDVr6q__r2-0GpeSE6g_vOyteEl52mX6vOx15zYA5X8_Jm1EfSu2wbsOGqxZ9wjff1L9hCHnOYMINyHQ_daS2WuKIedyi"/>
+<div class="absolute top-md left-md">
+<span class="bg-tertiary-container text-on-tertiary-container px-sm py-xs rounded-full font-label-sm text-[12px] flex items-center gap-1 shadow-lg">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+                            Award Winner
+                        </span>
+</div>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-sm">
+<h2 class="font-title-lg text-title-lg text-on-surface">Fintech Dashboard</h2>
+<span class="text-primary font-bold text-label-sm">Global Design Award</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">복잡한 금융 데이터를 직관적으로 시각화하여 사용자의 의사결정을 돕는 관리자용 대시보드입니다.</p>
+<div class="flex flex-wrap gap-sm mb-lg">
+<span class="bg-secondary-container text-on-secondary-container px-sm py-xs rounded-lg font-label-sm text-[12px]">Vue.js</span>
+<span class="bg-secondary-container text-on-secondary-container px-sm py-xs rounded-lg font-label-sm text-[12px]">D3.js</span>
+</div>
+<button class="w-full py-md bg-primary text-on-primary rounded-xl font-label-sm text-label-sm hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
+                        자세히 보기
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</article>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xl bg-surface-container-lowest border-t border-outline-variant/20">
+<div class="flex flex-col md:flex-row justify-between items-center gap-md px-gutter max-w-container-max mx-auto text-center md:text-left">
+<div class="flex flex-col gap-xs">
+<span class="font-title-lg text-title-lg font-black text-on-surface">Portfolio</span>
+<p class="font-label-sm text-label-sm text-secondary">© 2024 Portfolio. All rights reserved.</p>
+</div>
+<div class="flex gap-md">
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors" href="#">LinkedIn</a>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors" href="#">GitHub</a>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors" href="#">Twitter</a>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors" href="#">Email</a>
+</div>
+</div>
+</footer>
+<!-- Mobile Bottom Navigation (Hidden on Desktop) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface/90 glass-nav border-t border-outline-variant/10 py-xs z-50">
+<div class="flex justify-around items-center h-16">
+<a class="flex flex-col items-center gap-1 text-secondary" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">work</span>
+<span class="text-[10px] font-bold">Projects</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-secondary" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium">About</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-secondary" href="#">
+<span class="material-symbols-outlined">mail</span>
+<span class="text-[10px] font-medium">Contact</span>
+</a>
+</div>
+</nav>
+<script>
+        // Simple scroll effect for Navbar
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-md');
+            } else {
+                nav.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body></html>

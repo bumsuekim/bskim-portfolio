@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\10_d_work\\\\bskim-portfolio\" -Force)",
+      "Bash(Select-Object Name, Mode)",
+      "Bash(npm --version)",
+      "Bash(pip3 --version)",
+      "Bash(pip install *)",
+      "PowerShell(pip install playwright)",
+      "WebSearch",
+      "WebFetch(domain:docs.railway.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:vercel.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:wasp.sh)"
+    ]
+  }
+}

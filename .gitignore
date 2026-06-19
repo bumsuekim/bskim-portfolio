@@ -1,0 +1,51 @@
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env.*.local
+
+# Backend
+backend/__pycache__/
+backend/*.pyc
+backend/venv/
+backend/.env
+backend/portfolio.db
+backend/*.db
+
+# Vercel
+.vercel/
+web/.vercel/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Playwright / test artifacts
+frontend/tests/e2e/screenshots/
+frontend/tests/e2e/videos/
+frontend/test-results/
+frontend/playwright-report/
+tests/add_fail.png
+tests/__pycache__/
+
+# Python general
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+.env.local
+*.sqlite3
+*.db
+
+# Node portable (local dev tool, not part of the project)
+node-portable/
+
+# Railway / Vercel local state
+.railway/
+.vercel/

@@ -1,0 +1,70 @@
+{
+  "permissions": {
+    "allowList": [
+      "bash",
+      "read",
+      "glob",
+      "grep",
+      "write",
+      "edit"
+    ]
+  },
+  "project": {
+    "name": "포트폴리오 풀스택 웹앱",
+    "type": "fullstack",
+    "language": "ko"
+  },
+  "development": {
+    "frontend": {
+      "framework": "React",
+      "language": "TypeScript",
+      "bundler": "Vite",
+      "css": "Tailwind CSS",
+      "port": 5173
+    },
+    "backend": {
+      "framework": "FastAPI",
+      "language": "Python",
+      "port": 8000
+    },
+    "database": {
+      "dev": "SQLite3",
+      "prod": "PostgreSQL",
+      "orm": "SQLAlchemy"
+    }
+  },
+  "deployment": {
+    "frontend": {
+      "platform": "Vercel",
+      "branch": "main"
+    },
+    "backend": {
+      "platform": "Railway",
+      "branch": "main"
+    }
+  },
+  "testing": {
+    "e2e": "Playwright",
+    "strategy": "TDD"
+  },
+  "designSystem": {
+    "source": "design/indigo_professional_portfolio/DESIGN.md",
+    "colors": {
+      "primary": "#00236f",
+      "secondary": "#505f76"
+    },
+    "typography": "Inter",
+    "spacing": "8px grid"
+  },
+  "rules": {
+    "karpathy": [
+      "가정 명시",
+      "단순함",
+      "외과적 수정",
+      "검증 루프"
+    ],
+    "comments": "WHY가 명확할 때만",
+    "errorHandling": "시스템 경계에서만",
+    "abstraction": "3줄 이상 중복일 때만"
+  }
+}

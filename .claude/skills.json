@@ -1,0 +1,52 @@
+{
+  "skills": [
+    {
+      "id": "design-to-react",
+      "name": "설계 → React 변환",
+      "description": "design/ 폴더의 HTML을 React 컴포넌트로 변환. Tailwind 클래스를 유지하면서 컴포넌트화.",
+      "commands": ["/design-to-react <design-folder>"],
+      "example": "/design-to-react design/_1",
+      "output": "src/components/ 폴더에 React TSX 파일 생성"
+    },
+    {
+      "id": "screenshot-check",
+      "name": "스크린샷 검증",
+      "description": "개발한 페이지를 Playwright로 스크린샷 촬영. design/ 참조와 시각적 일치도 확인.",
+      "commands": ["/screenshot-check <page-path>"],
+      "example": "/screenshot-check /about",
+      "output": "스크린샷 비교 보고서, 차이점 강조"
+    },
+    {
+      "id": "api-test",
+      "name": "API 테스트",
+      "description": "FastAPI 엔드포인트를 테스트. TDD: 테스트 먼저 작성 후 구현.",
+      "commands": ["/api-test <endpoint>"],
+      "example": "/api-test GET /projects",
+      "output": "pytest 결과, 성공/실패 리포트"
+    },
+    {
+      "id": "db-migrate",
+      "name": "DB 마이그레이션",
+      "description": "SQLAlchemy 모델을 Alembic 마이그레이션으로 변환. SQLite와 PostgreSQL 호환성 검증.",
+      "commands": ["/db-migrate <message>"],
+      "example": "/db-migrate add-project-table",
+      "output": "alembic/versions/ 에 새 마이그레이션 파일 생성"
+    },
+    {
+      "id": "design-audit",
+      "name": "디자인 시스템 감시",
+      "description": "현재 코드베이스에서 design/DESIGN.md 규칙 위반 사항 검사. 색상, 타입, 간격 일관성 점검.",
+      "commands": ["/design-audit"],
+      "example": "/design-audit",
+      "output": "위반 사항 목록 및 수정 제안"
+    },
+    {
+      "id": "tailwind-build",
+      "name": "Tailwind 빌드",
+      "description": "Tailwind CSS 컴파일 및 최적화. 미사용 클래스 제거, 파일 크기 리포트.",
+      "commands": ["/tailwind-build"],
+      "example": "/tailwind-build",
+      "output": "빌드 완료 및 번들 크기 분석"
+    }
+  ]
+}

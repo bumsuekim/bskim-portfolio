@@ -1,0 +1,68 @@
+{
+  "agents": [
+    {
+      "id": "frontend-dev",
+      "name": "프론트엔드 개발자",
+      "description": "React + TypeScript + Tailwind CSS 컴포넌트 개발. design/ 폴더 설계를 기반으로 마크업 구현. 반응형 디자인 검증 포함.",
+      "capabilities": [
+        "React 컴포넌트 작성",
+        "Tailwind CSS 클래스 적용",
+        "Design System 색상/타이포 일관성 유지",
+        "Playwright로 스크린샷 검증",
+        "Vite 빌드 최적화"
+      ],
+      "context": [
+        "design/indigo_professional_portfolio/DESIGN.md",
+        "design/*/code.html (페이지 레퍼런스)"
+      ]
+    },
+    {
+      "id": "backend-dev",
+      "name": "백엔드 개발자",
+      "description": "FastAPI 엔드포인트 개발 및 SQLAlchemy 모델 정의. TDD 방식으로 API 테스트 먼저 작성.",
+      "capabilities": [
+        "FastAPI 라우트 설계",
+        "SQLAlchemy ORM 모델 작성",
+        "API 문서 생성 (OpenAPI)",
+        "입력 검증 (Pydantic)",
+        "pytest 유닛 테스트"
+      ],
+      "context": [
+        "CLAUDE.md (DB 스키마 정의)",
+        "기존 models/, routes/ 파일"
+      ]
+    },
+    {
+      "id": "db-engineer",
+      "name": "DB 엔지니어",
+      "description": "SQLAlchemy 설정 및 마이그레이션. 개발(SQLite) ↔ 배포(PostgreSQL) 환경 양립. Alembic으로 스키마 버전 관리.",
+      "capabilities": [
+        "SQLAlchemy 모델 정의",
+        "Alembic 마이그레이션 자동 생성",
+        "SQLite ↔ PostgreSQL 드라이버 호환성 점검",
+        "시드 데이터 로드",
+        "스키마 검증"
+      ],
+      "context": [
+        "CLAUDE.md (DB 설정 참조)",
+        "alembic/versions/ (마이그레이션 히스토리)"
+      ]
+    },
+    {
+      "id": "design-system",
+      "name": "디자인 시스템 엔지니어",
+      "description": "Tailwind CSS 설정을 design/ 색상 시스템과 정렬. 타이포그래피, 간격, 라운딩 일관성 유지.",
+      "capabilities": [
+        "tailwind.config.ts 커스터마이제이션",
+        "색상 팔레트 검증",
+        "타이포그래피 스케일 적용",
+        "Grid 시스템 설정",
+        "다크 모드 지원"
+      ],
+      "context": [
+        "design/indigo_professional_portfolio/DESIGN.md (색상/타입 정의)",
+        "tailwind.config.ts (현재 설정)"
+      ]
+    }
+  ]
+}

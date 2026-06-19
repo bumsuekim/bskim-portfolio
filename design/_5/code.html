@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>관리자 대시보드 - 프로젝트 관리</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Shared Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#dad9e1",
+                    "surface-container-low": "#f4f3fa",
+                    "on-secondary-fixed-variant": "#38485d",
+                    "on-primary-fixed": "#00164e",
+                    "surface": "#faf8ff",
+                    "on-primary-container": "#90a8ff",
+                    "on-primary": "#ffffff",
+                    "primary": "#00236f",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-container": "#6e2c00",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed-dim": "#ffb691",
+                    "on-error": "#ffffff",
+                    "inverse-surface": "#2f3036",
+                    "outline-variant": "#c5c5d3",
+                    "primary-container": "#1e3a8a",
+                    "tertiary-fixed": "#ffdbcb",
+                    "secondary-container": "#d0e1fb",
+                    "on-error-container": "#93000a",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed": "#d3e4fe",
+                    "surface-container-high": "#e9e7ef",
+                    "on-secondary-container": "#54647a",
+                    "surface-tint": "#4059aa",
+                    "primary-fixed": "#dce1ff",
+                    "on-tertiary-fixed": "#341100",
+                    "on-tertiary-container": "#f39461",
+                    "outline": "#757682",
+                    "on-background": "#1a1b21",
+                    "secondary-fixed-dim": "#b7c8e1",
+                    "on-secondary-fixed": "#0b1c30",
+                    "secondary": "#505f76",
+                    "tertiary": "#4b1c00",
+                    "primary-fixed-dim": "#b6c4ff",
+                    "surface-variant": "#e3e1e9",
+                    "on-tertiary-fixed-variant": "#773205",
+                    "surface-bright": "#faf8ff",
+                    "surface-container": "#eeedf4",
+                    "surface-container-highest": "#e3e1e9",
+                    "background": "#faf8ff",
+                    "on-primary-fixed-variant": "#264191",
+                    "inverse-on-surface": "#f1f0f7",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#b6c4ff",
+                    "on-surface": "#1a1b21",
+                    "on-surface-variant": "#444651"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "container-max": "1200px",
+                    "xl": "40px",
+                    "gutter": "24px",
+                    "2xl": "64px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "md": "16px",
+                    "sm": "8px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "display-lg-mobile": ["Inter"],
+                    "headline-md-mobile": ["Inter"],
+                    "title-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["30px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-md-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-24">
+<!-- Top Navigation Bar (Mobile Version) -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm">
+<div class="flex justify-between items-center h-16 px-gutter max-w-container-max mx-auto">
+<h1 class="font-title-lg text-title-lg font-bold text-primary">Admin Panel</h1>
+<div class="flex items-center gap-md">
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-all active:scale-90">
+<span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a corporate administrator in a modern office setting. The lighting is bright and clear, reflecting a light-mode UI aesthetic with clean whites and subtle blue undertones. The person is smiling confidently, conveying competence and authority in a tech-driven portfolio management environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHsYZ59UbZJ_QmUirPJQNln3qdgKP45oLUnLnLSOlbcFfP5-TV4QUAuULKeYTsQ17d6eRReD2ivY5HwvzVzz3kkp5XDzMDsTRTDjN1vvUn-6ebgWY4AoGw1cJFvJ1iRJPh3dCFGm8Ef1VJMgm03GMO5PcpOCKIPXhBro7nNrAHnDfK3IBZRLJvaq86E3DHzKa2oHQ6qu8thENcN4ONHBvXFWxYfN-N41sk9lRRckFC3wC5hQZ2UxEG"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 px-gutter max-w-container-max mx-auto">
+<div class="mb-lg">
+<h2 class="font-headline-md-mobile text-headline-md-mobile text-on-surface">관리자 대시보드</h2>
+<p class="font-body-md text-body-md text-secondary mt-xs">Manage your creative portfolio and projects.</p>
+</div>
+<!-- Project Management Content -->
+<section class="space-y-lg">
+<!-- Action Bar -->
+<div class="flex justify-between items-center bg-surface-container-lowest p-md rounded-xl border border-outline-variant/20 shadow-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">총 12개의 프로젝트</span>
+<button class="flex items-center gap-xs bg-primary text-on-primary px-md py-sm rounded-lg font-label-sm text-label-sm active:scale-95 transition-transform" onclick="document.getElementById('add-project-modal').classList.toggle('hidden')">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+                    프로젝트 추가
+                </button>
+</div>
+<!-- Project List (Mobile Optimized) -->
+<div class="grid grid-cols-1 gap-md">
+<!-- Item 1 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant/20 shadow-sm flex flex-col gap-md">
+<div class="flex gap-md">
+<div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A high-quality thumbnail showing a clean, modern web application interface for a financial management dashboard. The color scheme uses professional deep indigos and crisp whites. The shot is angled to show depth, emphasizing a professional and corporate portfolio quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJ0LaNXMwDolxeC-acIQVylZnq-pPzZkVg64MEeadmhrRK-lAGSP9b-Fh3I65QRbnhfcB04k5YjNRwCbg9WGh3FpoyAe5xu-cN7SJZai_9I61XSkLEoffYM5dp4ruY9iFim_SUIlXFh33n4kedycQGkTImpV6QHSMHgHXfsgQ_eJ-otvEgNeWXgT1GxoiRj3fLnKDdSOR7lKXCW3hdVm9PzEWMGf2HLBvyHPYBq62mIF9uId-XOJul"/>
+</div>
+<div class="flex-grow">
+<h3 class="font-title-lg text-title-lg text-on-surface">Smart Finance Dashboard</h3>
+<p class="text-secondary text-[13px] line-clamp-1">Next.js &amp; Tailwind CSS로 구현한 자산 관리 솔루션</p>
+<div class="flex gap-xs mt-xs">
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-[11px] font-medium">Fintech</span>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-[11px] font-medium">Web</span>
+</div>
+</div>
+</div>
+<div class="flex border-t border-outline-variant/20 pt-md justify-between items-center">
+<span class="text-[12px] text-secondary">수정일: 2024.05.20</span>
+<div class="flex gap-md">
+<button class="flex items-center gap-1 text-primary font-label-sm text-label-sm px-2 py-1 hover:bg-surface-container-low rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+                                수정
+                            </button>
+<button class="flex items-center gap-1 text-error font-label-sm text-label-sm px-2 py-1 hover:bg-error-container/20 rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+                                삭제
+                            </button>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant/20 shadow-sm flex flex-col gap-md">
+<div class="flex gap-md">
+<div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A mockup of a mobile e-commerce application displaying high-end luxury products. The design features minimalist typography and large, high-resolution product imagery. The atmosphere is sophisticated and premium, matching the Indigo and White brand colors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1_Buena4fgeWGSONsk9LqpbMfTfpz6WaJ18YsUmt1a3oC1K5z3zv9sdXBNjCdBAImNBs0r51VjTp0Z9fHkOx-KZshgF8_W4Qfl1Z3ifk2flEp-XxIBl1DRmSKIfQRdCdn6XFcPJAAg8ot1VnHYZkQ8WBnTco4-hvI7mEyTiYTvdpzk1RKXXwxHN6Dau2aeOqpTYJ3mEgnv4lhbTSCmXzErsbxvbRBWdsj12ZXpy5O5zeLPJCWt8s-"/>
+</div>
+<div class="flex-grow">
+<h3 class="font-title-lg text-title-lg text-on-surface">Luxury E-commerce Platform</h3>
+<p class="text-secondary text-[13px] line-clamp-1">명품 커머스 플랫폼 고도화 및 리브랜딩</p>
+<div class="flex gap-xs mt-xs">
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-[11px] font-medium">Mobile</span>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-[11px] font-medium">UX/UI</span>
+</div>
+</div>
+</div>
+<div class="flex border-t border-outline-variant/20 pt-md justify-between items-center">
+<span class="text-[12px] text-secondary">수정일: 2024.04.15</span>
+<div class="flex gap-md">
+<button class="flex items-center gap-1 text-primary font-label-sm text-label-sm px-2 py-1 rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+                                수정
+                            </button>
+<button class="flex items-center gap-1 text-error font-label-sm text-label-sm px-2 py-1 rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+                                삭제
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Edit Form / Add Project Modal (Overlay Logic) -->
+<div class="fixed inset-0 z-[60] bg-on-background/40 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-md hidden" id="add-project-modal">
+<div class="bg-surface w-full max-w-md h-[795px] sm:h-auto sm:max-h-[795px] rounded-t-2xl sm:rounded-2xl overflow-y-auto flex flex-col shadow-2xl">
+<div class="sticky top-0 bg-surface px-gutter py-md border-b border-outline-variant/20 flex justify-between items-center z-10">
+<h3 class="font-headline-md-mobile text-headline-md-mobile text-on-surface">프로젝트 편집</h3>
+<button class="p-2 hover:bg-surface-container-low rounded-full transition-colors" onclick="document.getElementById('add-project-modal').classList.add('hidden')">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<form class="p-gutter space-y-lg">
+<!-- Image Upload -->
+<div class="space-y-sm">
+<label class="font-label-sm text-label-sm text-secondary">대표 이미지</label>
+<div class="relative group border-2 border-dashed border-outline-variant/50 rounded-xl bg-surface-container-low h-48 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors overflow-hidden">
+<input class="absolute inset-0 opacity-0 cursor-pointer" type="file"/>
+<div class="text-center flex flex-col items-center">
+<span class="material-symbols-outlined text-outline text-4xl mb-sm" data-icon="upload_file">upload_file</span>
+<span class="font-label-sm text-label-sm text-secondary">클릭하여 이미지 업로드 (1200x800 권장)</span>
+</div>
+</div>
+</div>
+<!-- Inputs -->
+<div class="space-y-md">
+<div class="space-y-xs">
+<label class="font-label-sm text-label-sm text-secondary">프로젝트 제목</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg p-md font-body-md text-body-md focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="예: 스마트 헬스케어 대시보드" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-sm text-label-sm text-secondary">프로젝트 설명</label>
+<textarea class="w-full bg-surface-container-low border-none rounded-lg p-md font-body-md text-body-md focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="프로젝트의 주요 목표와 역할을 설명해주세요." rows="3"></textarea>
+</div>
+<div class="space-y-xs">
+<label class="font-label-sm text-label-sm text-secondary">주요 성과</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg p-md font-body-md text-body-md focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="예: 사용자 전환율 20% 상승" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-sm text-label-sm text-secondary">사용 기술 (쉼표로 구분)</label>
+<input class="w-full bg-surface-container-low border-none rounded-lg p-md font-body-md text-body-md focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="React, TypeScript, Tailwind" type="text"/>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="flex gap-md pt-md border-t border-outline-variant/20">
+<button class="flex-1 py-md border border-outline text-secondary font-label-sm text-label-sm rounded-lg hover:bg-surface-container-low transition-colors" onclick="document.getElementById('add-project-modal').classList.add('hidden')" type="button">취소</button>
+<button class="flex-1 py-md bg-primary text-on-primary font-label-sm text-label-sm rounded-lg active:scale-95 transition-transform" type="submit">저장하기</button>
+</div>
+</form>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile Destination Rule) -->
+<nav class="fixed bottom-0 w-full bg-surface-container shadow-[0_-4px_12px_rgba(0,0,0,0.05)] md:hidden z-50">
+<div class="flex justify-around items-center h-20 px-md">
+<!-- Dashboard Tab (Inactive) -->
+<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-2 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[11px] font-medium">Dashboard</span>
+</a>
+<!-- Manage Projects Tab (Active) -->
+<a class="flex flex-col items-center gap-1 bg-primary-container text-on-primary-container rounded-xl px-4 py-2 scale-105 shadow-sm" href="#">
+<span class="material-symbols-outlined" data-icon="work" style="font-variation-settings: 'FILL' 1;">work</span>
+<span class="text-[11px] font-bold">Manage Projects</span>
+</a>
+<!-- Profile Settings Tab (Inactive) -->
+<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-2 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[11px] font-medium">Settings</span>
+</a>
+<!-- Logout -->
+<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:bg-surface-container-high rounded-xl px-4 py-2 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="text-[11px] font-medium">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Floating Action Button Suppression Check: Not rendered on Settings/Details as per mandate -->
+<script>
+        // Micro-interaction for project items
+        document.querySelectorAll('.bg-surface-container-lowest').forEach(item => {
+            item.addEventListener('touchstart', () => {
+                item.classList.add('scale-[0.98]', 'bg-surface-container-low');
+            });
+            item.addEventListener('touchend', () => {
+                item.classList.remove('scale-[0.98]', 'bg-surface-container-low');
+            });
+        });
+
+        // Close modal on backdrop click
+        const modal = document.getElementById('add-project-modal');
+        modal.addEventListener('click', (e) => {
+            if(e.target === modal) modal.classList.add('hidden');
+        });
+    </script>
+</body></html>

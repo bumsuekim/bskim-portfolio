@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#dad9e1",
+                    "surface-container-low": "#f4f3fa",
+                    "on-secondary-fixed-variant": "#38485d",
+                    "on-primary-fixed": "#00164e",
+                    "surface": "#faf8ff",
+                    "on-primary-container": "#90a8ff",
+                    "on-primary": "#ffffff",
+                    "primary": "#00236f",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-container": "#6e2c00",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed-dim": "#ffb691",
+                    "on-error": "#ffffff",
+                    "inverse-surface": "#2f3036",
+                    "outline-variant": "#c5c5d3",
+                    "primary-container": "#1e3a8a",
+                    "tertiary-fixed": "#ffdbcb",
+                    "secondary-container": "#d0e1fb",
+                    "on-error-container": "#93000a",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed": "#d3e4fe",
+                    "surface-container-high": "#e9e7ef",
+                    "on-secondary-container": "#54647a",
+                    "surface-tint": "#4059aa",
+                    "primary-fixed": "#dce1ff",
+                    "on-tertiary-fixed": "#341100",
+                    "on-tertiary-container": "#f39461",
+                    "outline": "#757682",
+                    "on-background": "#1a1b21",
+                    "secondary-fixed-dim": "#b7c8e1",
+                    "on-secondary-fixed": "#0b1c30",
+                    "secondary": "#505f76",
+                    "tertiary": "#4b1c00",
+                    "primary-fixed-dim": "#b6c4ff",
+                    "surface-variant": "#e3e1e9",
+                    "on-tertiary-fixed-variant": "#773205",
+                    "surface-bright": "#faf8ff",
+                    "surface-container": "#eeedf4",
+                    "surface-container-highest": "#e3e1e9",
+                    "background": "#faf8ff",
+                    "on-primary-fixed-variant": "#264191",
+                    "inverse-on-surface": "#f1f0f7",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#b6c4ff",
+                    "on-surface": "#1a1b21",
+                    "on-surface-variant": "#444651"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "container-max": "1200px",
+                    "xl": "40px",
+                    "gutter": "24px",
+                    "2xl": "64px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "md": "16px",
+                    "sm": "8px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "display-lg-mobile": ["Inter"],
+                    "headline-md-mobile": ["Inter"],
+                    "title-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["30px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-md-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 dark:border-outline-variant/10 shadow-sm">
+<div class="flex justify-between items-center h-16 px-gutter max-w-container-max mx-auto">
+<span class="font-title-lg text-title-lg font-bold text-primary dark:text-primary-fixed-dim">Portfolio</span>
+<!-- Mobile Hidden Links (UI logic: Desktop only) -->
+<div class="hidden md:flex gap-md items-center">
+<a class="font-label-sm text-label-sm text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors" href="#">Home</a>
+<a class="font-label-sm text-label-sm text-primary dark:text-primary-fixed-dim border-b-2 border-primary pb-1" href="#">About</a>
+<a class="font-label-sm text-label-sm text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors" href="#">Projects</a>
+<a class="font-label-sm text-label-sm text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors" href="#">Contact</a>
+</div>
+<button class="material-symbols-outlined text-primary md:hidden">menu</button>
+<button class="hidden md:block bg-primary text-on-primary px-md py-xs rounded-lg font-label-sm transition-transform active:scale-95">Admin</button>
+</div>
+</nav>
+<main class="pt-24 pb-2xl px-gutter max-w-container-max mx-auto overflow-x-hidden">
+<!-- Profile Section -->
+<section class="flex flex-col items-center text-center mb-xl">
+<div class="relative w-32 h-32 mb-md">
+<div class="absolute inset-0 bg-primary-container/20 rounded-full animate-pulse"></div>
+<img class="w-full h-full object-cover rounded-full border-4 border-surface shadow-md" data-alt="A professional, clean studio portrait of a modern software engineer in a bright, high-key setting. The person has a friendly expression, wearing minimalist business casual attire. The background is a soft, out-of-focus tech office with cool white and indigo light-mode tones, emphasizing a professional yet approachable corporate vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQaqpg20S2o0kbly4hk_HCRYZ-V8QJf0bX5jlpnYrF6zA7kCmqRSd3UPOgjShERRopXhGTz197E7n94yoEX8voOzb6tVlg7swtES9BlKOrXH0hIyeVZ3sCXp92IZ5LYvsvhjEhDLVW3J9KTXPR5HilZQmFLbU-9oHNjX8H5BCEaZUr5IzlluDSHjyCJn3EBYL2wUnz_WaAKIC4H0B19uJt4nHbzqwEKwl9yXIAX2MfUum-bYYjfPch"/>
+</div>
+<h1 class="font-headline-md-mobile text-headline-md-mobile text-on-surface mb-xs">김민수 (Minsoo Kim)</h1>
+<p class="font-title-lg text-title-lg text-primary font-medium mb-xs">Senior Software Engineer</p>
+<div class="flex items-center gap-xs text-secondary">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span class="font-body-md text-body-md">서울, 대한민국</span>
+</div>
+</section>
+<!-- Summary Section -->
+<section class="mb-xl px-sm">
+<div class="p-lg rounded-xl bg-surface-container-low border border-outline-variant/30">
+<h2 class="font-title-lg text-title-lg text-on-surface mb-sm flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+                    소개
+                </h2>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                    10년 차 개발자로서 복잡한 문제를 해결하고 확장 가능한 아키텍처를 설계하는 것에 열정을 가지고 있습니다. 단순히 코드를 작성하는 것을 넘어, 비즈니스 가치를 창출하고 팀의 생산성을 극대화하는 솔루션을 제공합니다. 현대적인 웹 기술 스택을 기반으로 사용자 중심의 고성능 서비스를 구축합니다.
+                </p>
+</div>
+</section>
+<!-- Bento Grid: Info Cards -->
+<section class="grid grid-cols-1 gap-md">
+<!-- 1. Career Card -->
+<div class="glass-card p-lg rounded-2xl shadow-sm">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container">work</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface">주요 경력</h3>
+</div>
+<div class="space-y-md">
+<div class="flex gap-md">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-primary mt-2"></div>
+<div class="w-0.5 h-full bg-outline-variant/50"></div>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-primary font-bold">Google Korea</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Lead Frontend Engineer</p>
+<p class="text-[12px] text-secondary">2020 - Present</p>
+</div>
+</div>
+<div class="flex gap-md">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-outline-variant mt-2"></div>
+<div class="w-0.5 h-full bg-transparent"></div>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface font-bold">Naver</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Senior Developer</p>
+<p class="text-[12px] text-secondary">2016 - 2020</p>
+</div>
+</div>
+</div>
+</div>
+<!-- 2. Contact Card -->
+<div class="glass-card p-lg rounded-2xl shadow-sm border-l-4 border-l-primary">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container">contact_mail</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface">연락처</h3>
+</div>
+<div class="grid grid-cols-1 gap-sm">
+<a class="flex items-center gap-md p-sm rounded-lg hover:bg-surface-container-high transition-colors" href="mailto:dev.minsoo@email.com">
+<span class="material-symbols-outlined text-primary">mail</span>
+<span class="font-body-md text-body-md text-on-surface-variant">dev.minsoo@email.com</span>
+</a>
+<a class="flex items-center gap-md p-sm rounded-lg hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">link</span>
+<span class="font-body-md text-body-md text-on-surface-variant">LinkedIn/minsoo-kim</span>
+</a>
+</div>
+</div>
+<!-- 3. Awards Card -->
+<div class="bg-primary-container text-on-primary-container p-lg rounded-2xl shadow-md">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-10 h-10 rounded-lg bg-surface/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-primary-container">자격 및 수상</h3>
+</div>
+<ul class="space-y-sm">
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-on-primary-container mt-1 text-[18px]">verified</span>
+<div>
+<p class="font-label-sm text-label-sm font-bold">올해의 개발자상 (Dev Awards)</p>
+<p class="text-[12px] opacity-80">2023 - Innovative Architecture</p>
+</div>
+</li>
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-on-primary-container mt-1 text-[18px]">verified</span>
+<div>
+<p class="font-label-sm text-label-sm font-bold">AWS Certified Solutions Architect</p>
+<p class="text-[12px] opacity-80">Professional Level</p>
+</div>
+</li>
+</ul>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xl bg-surface-container-lowest border-t border-outline-variant/20">
+<div class="flex flex-col md:flex-row justify-between items-center gap-md px-gutter max-w-container-max mx-auto">
+<span class="font-title-lg text-title-lg font-black text-on-surface">Portfolio</span>
+<div class="flex gap-lg">
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors" href="#">LinkedIn</a>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors" href="#">GitHub</a>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors" href="#">Twitter</a>
+<a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors" href="#">Email</a>
+</div>
+<p class="font-label-sm text-label-sm text-secondary opacity-80 mt-md md:mt-0">
+                © 2024 Portfolio. All rights reserved.
+            </p>
+</div>
+</footer>
+<script>
+        // Micro-interactions
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.98)';
+                card.style.transition = 'transform 0.2s';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+
+        // Simple Fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-4');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-4');
+            observer.observe(section);
+        });
+    </script>
+</body></html>
