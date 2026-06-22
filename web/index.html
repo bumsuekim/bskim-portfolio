@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>포트폴리오</title>
+    <title>김범수 · 포트폴리오</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #00236f;
@@ -13,40 +13,42 @@
             --surface: #faf8ff;
             --on-surface: #1a1b21;
             --on-surface-variant: #444651;
-            --surface-container-low: #f4f3fa;
             --error: #ba1a1a;
         }
         body { font-family: Inter, sans-serif; }
-        .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(226, 232, 240, 0.5); }
+        .glass-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(226,232,240,0.5); }
+        .hero-bg { background: linear-gradient(135deg, #e8e8f5 0%, #dde0f0 40%, #e4e8f8 100%); }
+        .nav-active { color: #00236f !important; font-weight: 600; }
+        .stat-num { font-size: 2rem; font-weight: 800; color: #00236f; }
     </style>
 </head>
 <body class="bg-[#faf8ff] text-[#1a1b21]">
-    <nav id="header" class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm" style="background: rgba(250, 248, 255, 0.8);">
+
+    <!-- NAV -->
+    <nav class="fixed top-0 w-full z-50 border-b" style="background: rgba(250,248,255,0.92); backdrop-filter: blur(12px); border-color: rgba(197,197,211,0.25);">
         <div class="flex justify-between items-center h-16 px-6 max-w-6xl mx-auto">
-            <button onclick="currentPage = 'home'; render()" class="font-bold text-lg" style="color: #00236f;">Portfolio</button>
-            <div class="hidden md:flex gap-4 items-center">
-                <button onclick="currentPage = 'home'; render()" class="text-sm font-medium transition-colors" style="color: var(--secondary);">Home</button>
-                <button onclick="currentPage = 'about'; render()" class="text-sm font-medium transition-colors" style="color: var(--secondary);">About</button>
-                <button onclick="currentPage = 'projects'; render()" class="text-sm font-medium transition-colors" style="color: var(--secondary);">Projects</button>
-                <button onclick="currentPage = 'contact'; render()" class="text-sm font-medium transition-colors" style="color: var(--secondary);">Contact</button>
+            <button onclick="nav('home')" class="font-bold text-base tracking-widest uppercase" style="color: #1a1b21;">BSKIM</button>
+            <div class="hidden md:flex gap-8 items-center">
+                <button onclick="nav('home')" id="nav-home" class="text-sm font-medium transition-colors" style="color: #1a1b21;">Home</button>
+                <button onclick="nav('projects')" id="nav-projects" class="text-sm font-medium transition-colors" style="color: var(--secondary);">Projects</button>
+                <button onclick="nav('about')" id="nav-about" class="text-sm font-medium transition-colors" style="color: var(--secondary);">About</button>
             </div>
             <div id="authButtons"></div>
         </div>
     </nav>
 
-    <main class="pt-24 pb-16 px-6 max-w-6xl mx-auto">
-        <div id="content"></div>
-    </main>
+    <!-- PAGE CONTENT -->
+    <div id="content" class="pt-16"></div>
 
-    <footer class="w-full py-10 bg-white border-t" style="border-color: rgba(197, 197, 211, 0.2);">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4 px-6 max-w-6xl mx-auto">
-            <span class="font-bold text-lg">Portfolio</span>
+    <!-- FOOTER (홈 페이지에서만 보임) -->
+    <footer id="site-footer" class="w-full py-8 border-t" style="background:#fff; border-color: rgba(197,197,211,0.3);">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-3 px-6 max-w-6xl mx-auto">
+            <span class="font-bold tracking-widest uppercase text-sm">BSKIM</span>
             <div class="flex gap-6">
-                <a href="#" class="text-sm transition-colors" style="color: var(--secondary);">LinkedIn</a>
-                <a href="#" class="text-sm transition-colors" style="color: var(--secondary);">GitHub</a>
-                <a href="#" class="text-sm transition-colors" style="color: var(--secondary);">Email</a>
+                <a href="https://github.com/bumsuekim" target="_blank" class="text-sm transition-colors hover:text-[#00236f]" style="color: var(--secondary);">GitHub</a>
+                <a href="mailto:bskim@landsoft.co.kr" class="text-sm transition-colors hover:text-[#00236f]" style="color: var(--secondary);">Email</a>
             </div>
-            <p class="text-sm opacity-80" style="color: var(--secondary);">© 2024 Portfolio</p>
+            <p class="text-sm" style="color: var(--secondary);">© 2025 김범수</p>
         </div>
     </footer>
 
