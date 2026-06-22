@@ -1,337 +1,136 @@
-// Read backend URL from runtime config (config.js), fallback to localhost for dev.
 const API_URL = (window.APP_CONFIG && window.APP_CONFIG.API_URL) || 'http://localhost:8000';
 let currentPage = 'home';
 let isLoggedIn = false;
 let adminName = null;
 let authToken = null;
+let adminTab = 'password';
 
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('auth_token');
-    const name = localStorage.getItem('admin_name');
+    const name  = localStorage.getItem('admin_name');
     if (token) { isLoggedIn = true; adminName = name; authToken = token; }
     render();
 });
 
-function nav(page) {
-    currentPage = page;
-    render();
-    window.scrollTo(0, 0);
-}
+function nav(page) { currentPage = page; render(); window.scrollTo(0, 0); }
 
-function render() {
-    updateHeader();
-    renderPage();
-}
+function render() { updateHeader(); renderPage(); }
 
 function updateHeader() {
-    // nav 활성화 표시
-    ['home', 'projects', 'about'].forEach(p => {
+    ['home','projects','about'].forEach(p => {
         const el = document.getElementById('nav-' + p);
-        if (el) el.style.color = currentPage === p ? '#00236f' : 'var(--secondary)';
-        if (el) el.style.fontWeight = currentPage === p ? '600' : '500';
+        if (!el) return;
+        el.classList.toggle('active', currentPage === p);
     });
-
-    const authButtons = document.getElementById('authButtons');
+    const ab = document.getElementById('authButtons');
     if (isLoggedIn) {
-        authButtons.innerHTML = `
+        ab.innerHTML = `
             <div class="flex items-center gap-3">
-                <button onclick="nav('admin')" class="px-4 py-1.5 rounded-lg text-sm font-medium border" style="border-color: #00236f; color: #00236f;">Dashboard</button>
-                <button onclick="logout()" class="text-sm font-medium" style="color: var(--secondary);">Logout</button>
+                <button onclick="nav('admin')" class="btn-outline text-sm px-4 py-1.5">Dashboard</button>
+                <button onclick="logout()" class="text-sm nav-link">Logout</button>
             </div>`;
     } else {
-        authButtons.innerHTML = `
+        ab.innerHTML = `
             <div class="flex items-center gap-3">
-                <button onclick="nav('admin')" class="text-sm font-medium" style="color: var(--secondary);">Admin</button>
-                <button onclick="nav('contact')" class="px-4 py-1.5 rounded-full text-sm font-bold text-white" style="background: #00236f;">Hire Me</button>
+                <button onclick="nav('admin')" class="nav-link text-sm">Admin</button>
+                <button onclick="nav('contact')" class="btn-primary text-sm px-5 py-2">Hire Me</button>
             </div>`;
     }
 }
 
 function renderPage() {
     const content = document.getElementById('content');
-    const footer = document.getElementById('site-footer');
-
     if (currentPage === 'home') {
         content.innerHTML = pageHome();
-        if (footer) footer.style.display = '';
         loadHomeFeatured();
-    } else {
-        if (footer) footer.style.display = '';
-        if (currentPage === 'about') {
-            content.innerHTML = `<div class="pt-8 pb-16 px-6 max-w-6xl mx-auto">${pageAbout()}</div>`;
-        } else if (currentPage === 'projects') {
-            content.innerHTML = `<div class="pt-8 pb-16 px-6 max-w-6xl mx-auto">${pageProjects()}</div>`;
-            loadProjects();
-        } else if (currentPage === 'contact') {
-            content.innerHTML = `<div class="pt-8 pb-16 px-6 max-w-6xl mx-auto">${pageContact()}</div>`;
-        } else if (currentPage === 'admin') {
-            content.innerHTML = `<div class="pt-8 pb-16 px-6 max-w-6xl mx-auto">${isLoggedIn ? pageAdminDashboard() : pageAdminLogin()}</div>`;
-            if (isLoggedIn) loadAdminProjects();
-        }
+    } else if (currentPage === 'projects') {
+        content.innerHTML = wrap(pageProjects());
+        loadProjects();
+    } else if (currentPage === 'about') {
+        content.innerHTML = wrap(pageAbout());
+    } else if (currentPage === 'contact') {
+        content.innerHTML = wrap(pageContact());
+    } else if (currentPage === 'admin') {
+        content.innerHTML = wrap(isLoggedIn ? pageAdminDashboard() : pageAdminLogin());
+        if (isLoggedIn) loadAdminProjects();
     }
 }
 
-// ===== 페이지 콘텐츠 =====
+function wrap(html) {
+    return `<div class="px-6 max-w-6xl mx-auto py-12">${html}</div>`;
+}
 
+// ═══════════════════════════════════════════════════════
+//  HOME
+// ═══════════════════════════════════════════════════════
 function pageHome() {
     return `
-        <!-- HERO: 연보라 전폭 배경 -->
-        <section class="hero-bg w-full" style="min-height: 80vh; display: flex; align-items: center;">
-            <div class="px-6 max-w-6xl mx-auto w-full py-20">
-                <span class="inline-block px-4 py-1.5 rounded-full text-sm font-medium mb-6" style="background: rgba(0,35,111,0.1); color: #00236f;">
-                    풀스택 개발자 · FastAPI / Python
-                </span>
-                <p class="text-xl md:text-2xl font-medium mb-2" style="color: #444651;">안녕하세요,</p>
-                <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight" style="color: #00236f;">김범수입니다</h1>
-                <p class="text-lg md:text-xl leading-relaxed mb-10 max-w-xl" style="color: #444651;">
-                    백엔드 설계부터 프론트엔드 구현까지 전 주기를 담당하는 풀스택 개발자입니다.<br>
-                    FastAPI · SQLAlchemy · React 기반 서비스를 Railway · Vercel에 배포 운영합니다.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <button onclick="nav('projects')" class="px-8 py-3 rounded-full font-bold text-white text-base" style="background: #00236f;">
-                        프로젝트 보기 →
-                    </button>
-                    <button onclick="nav('about')" class="px-8 py-3 rounded-full font-bold text-base border-2" style="border-color: #00236f; color: #00236f; background: transparent;">
-                        소개 보기
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- STATS BAR -->
-        <section class="w-full border-b" style="background: #fff; border-color: rgba(197,197,211,0.3);">
-            <div class="px-6 max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 divide-x" style="divide-color: rgba(197,197,211,0.3);">
-                <div class="py-10 px-6 text-center">
-                    <div class="stat-num">3년+</div>
-                    <p class="text-sm mt-1" style="color: #505f76;">개발 경력</p>
-                </div>
-                <div class="py-10 px-6 text-center">
-                    <div class="stat-num">10+</div>
-                    <p class="text-sm mt-1" style="color: #505f76;">완성 프로젝트</p>
-                </div>
-                <div class="py-10 px-6 text-center">
-                    <div class="stat-num">100%</div>
-                    <p class="text-sm mt-1" style="color: #505f76;">배포 성공률</p>
-                </div>
-                <div class="py-10 px-6 text-center">
-                    <div class="stat-num">24/7</div>
-                    <p class="text-sm mt-1" style="color: #505f76;">서비스 운영</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- FEATURED PROJECTS PREVIEW -->
-        <section class="px-6 max-w-6xl mx-auto py-16">
-            <div class="flex justify-between items-baseline mb-8">
-                <div>
-                    <h2 class="text-2xl font-bold">주요 프로젝트</h2>
-                    <p class="text-sm mt-1" style="color: #505f76;">FastAPI, Python, 풀스택 분야의 핵심 프로젝트입니다</p>
-                </div>
-                <button onclick="nav('projects')" class="text-sm font-medium flex items-center gap-1" style="color: #00236f;">전체 보기 →</button>
-            </div>
-            <div id="homeFeatured" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="text-center py-12" style="color: #505f76;">로딩 중...</div>
-            </div>
-        </section>
-    `;
-}
-
-function pageAbout() {
-    return `
-        <section class="text-center mb-12">
-            <div class="w-28 h-28 mx-auto mb-5 rounded-full flex items-center justify-center text-4xl font-extrabold text-white" style="background: linear-gradient(135deg, #00236f, #3a5fc0);">BS</div>
-            <h1 class="text-3xl font-extrabold mb-1" style="color: #1a1b21;">김범수</h1>
-            <p class="text-base font-semibold mb-1" style="color: #00236f;">풀스택 개발자 · FastAPI / Python</p>
-            <p class="text-sm" style="color: #505f76;">📍 대한민국</p>
-        </section>
-
-        <section class="mb-6">
-            <div class="p-6 rounded-2xl" style="background: #f4f3fa; border: 1px solid rgba(197,197,211,0.3);">
-                <h2 class="font-bold mb-3">소개</h2>
-                <p class="text-sm leading-relaxed" style="color: #444651;">
-                    백엔드 설계부터 프론트엔드 구현, 클라우드 배포까지 전 주기를 직접 담당하는 풀스택 개발자입니다.
-                    FastAPI와 SQLAlchemy로 REST API를 구축하고, Railway · Vercel 환경에서 서비스를 안정적으로 운영합니다.
-                    테스트 주도 개발(Playwright E2E)과 보안(JWT 인증)을 중요시합니다.
-                </p>
-            </div>
-        </section>
-
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div class="glass-card p-6 rounded-2xl">
-                <h3 class="font-bold mb-4">기술 스택</h3>
-                <div class="space-y-3">
-                    <div>
-                        <p class="text-xs font-semibold mb-2 uppercase tracking-wider" style="color: #505f76;">Backend</p>
-                        <div class="flex flex-wrap gap-2">
-                            ${['Python', 'FastAPI', 'SQLAlchemy', 'Pydantic', 'JWT'].map(t => `<span class="px-3 py-1 rounded-full text-xs font-medium" style="background:#e8e8f5; color:#00236f;">${t}</span>`).join('')}
-                        </div>
-                    </div>
-                    <div>
-                        <p class="text-xs font-semibold mb-2 uppercase tracking-wider" style="color: #505f76;">Frontend</p>
-                        <div class="flex flex-wrap gap-2">
-                            ${['Vanilla JS', 'Tailwind CSS', 'React', 'TypeScript'].map(t => `<span class="px-3 py-1 rounded-full text-xs font-medium" style="background:#e8e8f5; color:#00236f;">${t}</span>`).join('')}
-                        </div>
-                    </div>
-                    <div>
-                        <p class="text-xs font-semibold mb-2 uppercase tracking-wider" style="color: #505f76;">Infra / DB</p>
-                        <div class="flex flex-wrap gap-2">
-                            ${['Railway', 'Vercel', 'PostgreSQL', 'SQLite', 'Playwright'].map(t => `<span class="px-3 py-1 rounded-full text-xs font-medium" style="background:#e8e8f5; color:#00236f;">${t}</span>`).join('')}
-                        </div>
-                    </div>
-                </div>
+    <!-- HERO -->
+    <section class="hero-bg grid-pattern w-full" style="min-height:88vh; display:flex; align-items:center;">
+        <div class="px-6 max-w-6xl mx-auto w-full py-24">
+            <div class="flex items-center gap-2 mb-6">
+                <span class="pulse-dot w-2 h-2 rounded-full" style="background:var(--success);"></span>
+                <span class="text-sm mono" style="color:var(--text-muted);">Available for AI Transformation Projects</span>
             </div>
 
-            <div class="flex flex-col gap-4">
-                <div class="glass-card p-6 rounded-2xl" style="border-left: 4px solid #00236f;">
-                    <h3 class="font-bold mb-3">연락처</h3>
-                    <div class="space-y-2">
-                        <a href="mailto:bskim@landsoft.co.kr" class="flex items-center gap-3 text-sm hover:text-[#00236f] transition-colors" style="color: #444651;">
-                            <span>📧</span> bskim@landsoft.co.kr
-                        </a>
-                        <a href="https://github.com/bumsuekim" target="_blank" class="flex items-center gap-3 text-sm hover:text-[#00236f] transition-colors" style="color: #444651;">
-                            <span>🐙</span> github.com/bumsuekim
-                        </a>
-                    </div>
-                </div>
+            <div class="badge mb-6">Java 엔터프라이즈 · AI 전환 전문가</div>
 
-                <div class="p-6 rounded-2xl" style="background: #00236f; color: white;">
-                    <h3 class="font-bold mb-3">배포 중인 서비스</h3>
-                    <ul class="space-y-2 text-sm">
-                        <li class="flex items-start gap-2">
-                            <span class="opacity-70">▸</span>
-                            <div>
-                                <p class="font-semibold">포트폴리오 웹앱</p>
-                                <p class="text-xs opacity-70">FastAPI + Vanilla JS · Railway + Vercel</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+            <p class="text-xl md:text-2xl font-medium mb-3" style="color:var(--text-muted);">안녕하세요,</p>
+            <h1 class="font-extrabold leading-tight mb-6" style="font-size: clamp(3rem, 8vw, 5.5rem);">
+                <span style="background: linear-gradient(135deg, #e2e8f0 30%, #38bdf8 70%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">김범수</span>
+                <span style="color:var(--text);">입니다</span>
+            </h1>
+
+            <p class="text-lg leading-relaxed mb-10 max-w-2xl" style="color:var(--text-muted);">
+                <span style="color:var(--primary);">Java/Spring</span> 기반 엔터프라이즈 개발 경험과
+                <span style="color:var(--secondary);">LLM · RAG · FastAPI</span> 기반 AI 전환 역량을 모두 갖춘
+                풀스택 개발자입니다.<br>
+                레거시 시스템의 AI 현대화부터 신규 AI 서비스 구축까지 전 주기를 담당합니다.
+            </p>
+
+            <div class="flex flex-wrap gap-3 mb-12">
+                ${['Java / Spring Boot','Python / FastAPI','LLM / RAG','SQLAlchemy','PostgreSQL','Docker','Railway · Vercel']
+                    .map(t => `<span class="tag">${t}</span>`).join('')}
             </div>
-        </section>
-    `;
-}
 
-function pageProjects() {
-    return `
-        <section class="mb-12">
-            <h1 class="text-3xl font-bold mb-4">포트폴리오 프로젝트</h1>
-            <p style="color: #505f76;">다양한 웹 프로젝트를 통해 기술력을 보여드립니다.</p>
-        </section>
-
-        <div id="projectsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="text-center py-12" style="color: #505f76;">로딩 중...</div>
+            <div class="flex flex-wrap gap-4">
+                <button onclick="nav('projects')" class="btn-primary text-base">프로젝트 보기 →</button>
+                <button onclick="nav('about')" class="btn-outline text-base">소개 보기</button>
+            </div>
         </div>
-    `;
-}
+    </section>
 
-function pageContact() {
-    return `
-        <section class="max-w-2xl mx-auto mb-12 text-center">
-            <h1 class="text-3xl font-bold mb-4">연락하기</h1>
-            <p style="color: #505f76;">의견이나 제안이 있으시면 언제든 연락해주세요.</p>
-        </section>
-
-        <div id="contactResult" class="mb-4"></div>
-
-        <form onsubmit="handleContactSubmit(event)" class="max-w-2xl mx-auto glass-card p-6 rounded-2xl space-y-4">
-            <div>
-                <label class="block text-sm font-medium mb-2">이름</label>
-                <input type="text" id="contactName" required class="w-full px-4 py-2 rounded-lg border" style="border-color: rgba(197, 197, 211, 0.3); background: #f4f3fa;">
-            </div>
-            <div>
-                <label class="block text-sm font-medium mb-2">이메일</label>
-                <input type="email" id="contactEmail" required class="w-full px-4 py-2 rounded-lg border" style="border-color: rgba(197, 197, 211, 0.3); background: #f4f3fa;">
-            </div>
-            <div>
-                <label class="block text-sm font-medium mb-2">제목</label>
-                <input type="text" id="contactSubject" required class="w-full px-4 py-2 rounded-lg border" style="border-color: rgba(197, 197, 211, 0.3); background: #f4f3fa;">
-            </div>
-            <div>
-                <label class="block text-sm font-medium mb-2">메시지</label>
-                <textarea id="contactMessage" rows="6" required class="w-full px-4 py-2 rounded-lg border" style="border-color: rgba(197, 197, 211, 0.3); background: #f4f3fa;"></textarea>
-            </div>
-            <button type="submit" class="w-full py-3 rounded-lg font-bold text-white" style="background: #00236f;">보내기</button>
-        </form>
-    `;
-}
-
-function pageAdminLogin() {
-    return `
-        <section class="max-w-md mx-auto">
-            <h1 class="text-3xl font-bold mb-8 text-center">관리자 로그인</h1>
-
-            <div id="loginError" class="mb-4"></div>
-
-            <form onsubmit="handleLogin(event)" class="glass-card p-6 rounded-2xl space-y-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">사용자명</label>
-                    <input type="text" id="username" placeholder="admin" required class="w-full px-4 py-2 rounded-lg border" style="border-color: rgba(197, 197, 211, 0.3); background: #f4f3fa;">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">비밀번호</label>
-                    <input type="password" id="password" placeholder="••••••••" required class="w-full px-4 py-2 rounded-lg border" style="border-color: rgba(197, 197, 211, 0.3); background: #f4f3fa;">
-                </div>
-                <button type="submit" class="w-full py-3 rounded-lg font-bold text-white" style="background: #00236f;">로그인</button>
-            </form>
-        </section>
-    `;
-}
-
-function pageAdminDashboard() {
-    return `
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold">대시보드</h1>
-            <button onclick="logout()" class="px-4 py-2 rounded-lg text-sm font-medium text-white" style="background: #ba1a1a;">로그아웃</button>
+    <!-- STATS -->
+    <section style="background:var(--bg-surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+        <div class="px-6 max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4">
+            ${[
+                {n:'7년+',  l:'개발 경력'},
+                {n:'20+',   l:'엔터프라이즈 프로젝트'},
+                {n:'5+',    l:'AI 전환 프로젝트'},
+                {n:'99%',   l:'배포 성공률'},
+            ].map(s => `
+            <div class="py-10 px-4 text-center" style="border-right:1px solid var(--border);">
+                <div class="stat-num">${s.n}</div>
+                <p class="text-sm mt-1" style="color:var(--text-muted);">${s.l}</p>
+            </div>`).join('')}
         </div>
+    </section>
 
-        <div id="adminMessage" class="mb-4"></div>
-
-        <div class="flex gap-4 mb-8 border-b" style="border-color: rgba(197, 197, 211, 0.2);">
-            <button onclick="adminTab = 'password'; render()" class="font-medium pb-3 text-sm" style="color: ${adminTab === 'password' ? '#00236f' : '#505f76'}; border-bottom: ${adminTab === 'password' ? '2px solid #00236f' : 'none'};">비밀번호 변경</button>
-            <button onclick="adminTab = 'projects'; render()" class="font-medium pb-3 text-sm" style="color: ${adminTab === 'projects' ? '#00236f' : '#505f76'}; border-bottom: ${adminTab === 'projects' ? '2px solid #00236f' : 'none'};">프로젝트 관리</button>
-        </div>
-
-        ${adminTab === 'password' ? `
-            <form onsubmit="handleChangePassword(event)" class="max-w-md mx-auto glass-card p-6 rounded-2xl space-y-4">
-                <div>
-                    <label class="block text-sm font-medium mb-2">현재 비밀번호</label>
-                    <input type="password" id="currentPassword" required class="w-full px-4 py-2 rounded-lg border" style="border-color: rgba(197, 197, 211, 0.3); background: #f4f3fa;">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">새 비밀번호</label>
-                    <input type="password" id="newPassword" required class="w-full px-4 py-2 rounded-lg border" style="border-color: rgba(197, 197, 211, 0.3); background: #f4f3fa;">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-2">새 비밀번호 확인</label>
-                    <input type="password" id="confirmPassword" required class="w-full px-4 py-2 rounded-lg border" style="border-color: rgba(197, 197, 211, 0.3); background: #f4f3fa;">
-                </div>
-                <button type="submit" class="w-full py-3 rounded-lg font-bold text-white" style="background: #00236f;">비밀번호 변경</button>
-            </form>
-        ` : `
-            <div class="space-y-8">
-                <div class="glass-card p-6 rounded-2xl">
-                    <h2 class="font-bold mb-4">새 프로젝트 추가</h2>
-                    <form onsubmit="handleAddProject(event)" class="space-y-4">
-                        <input type="text" id="projectTitle" placeholder="프로젝트 제목" required class="w-full px-4 py-2 rounded-lg border" style="border-color: rgba(197, 197, 211, 0.3); background: #f4f3fa;">
-                        <textarea id="projectDesc" placeholder="프로젝트 설명" rows="3" required class="w-full px-4 py-2 rounded-lg border" style="border-color: rgba(197, 197, 211, 0.3); background: #f4f3fa;"></textarea>
-                        <input type="text" id="projectTech" placeholder="사용 기술 (쉼표로 구분)" required class="w-full px-4 py-2 rounded-lg border" style="border-color: rgba(197, 197, 211, 0.3); background: #f4f3fa;">
-                        <input type="url" id="projectLink" placeholder="링크" class="w-full px-4 py-2 rounded-lg border" style="border-color: rgba(197, 197, 211, 0.3); background: #f4f3fa;">
-                        <button type="submit" class="w-full py-2 rounded-lg font-bold text-white" style="background: #00236f;">추가</button>
-                    </form>
-                </div>
-
-                <div>
-                    <h2 class="font-bold mb-4">프로젝트 목록</h2>
-                    <div id="adminProjectsList" class="space-y-2">
-                        <p style="color: #505f76;">로딩 중...</p>
-                    </div>
-                </div>
+    <!-- FEATURED PROJECTS -->
+    <section class="px-6 max-w-6xl mx-auto py-20">
+        <div class="flex justify-between items-end mb-10">
+            <div>
+                <p class="mono text-xs mb-2" style="color:var(--primary);">// SELECTED WORK</p>
+                <h2 class="text-3xl font-bold">주요 프로젝트</h2>
+                <p class="text-sm mt-2" style="color:var(--text-muted);">Java 엔터프라이즈 · AI 전환 · 풀스택 대표 사례</p>
             </div>
-        `}
-    `;
+            <button onclick="nav('projects')" class="text-sm flex items-center gap-1 hover:text-sky-400 transition-colors" style="color:var(--primary);">전체 보기 →</button>
+        </div>
+        <div id="homeFeatured" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            ${[1,2,3].map(() => `<div class="card p-6 animate-pulse"><div class="h-4 rounded mb-3" style="background:var(--border)"></div><div class="h-3 rounded" style="background:var(--border)"></div></div>`).join('')}
+        </div>
+    </section>`;
 }
-
-// ===== API 함수 =====
 
 async function loadHomeFeatured() {
     try {
@@ -340,246 +139,403 @@ async function loadHomeFeatured() {
         const el = document.getElementById('homeFeatured');
         if (!el) return;
         const top = projects.slice(0, 3);
-        if (!top.length) { el.innerHTML = '<p style="color:#505f76;" class="col-span-3 text-center py-12">아직 등록된 프로젝트가 없습니다.</p>'; return; }
-        el.innerHTML = top.map(p => `
-            <div class="glass-card rounded-2xl overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onclick="nav('projects')">
-                <div class="h-40" style="background: linear-gradient(135deg, #dde0f0, #c8cce8);"></div>
-                <div class="p-5">
-                    <h3 class="font-bold mb-1">${p.title}</h3>
-                    <p class="text-sm mb-3 line-clamp-2" style="color:#444651;">${p.description}</p>
-                    <div class="flex flex-wrap gap-1">
-                        ${p.technologies.split(',').slice(0,3).map(t => `<span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:#e8e8f5; color:#00236f;">${t.trim()}</span>`).join('')}
-                    </div>
-                </div>
-            </div>`).join('');
-    } catch { /* 네트워크 오류 시 무시 */ }
+        if (!top.length) {
+            el.innerHTML = `<p class="col-span-3 text-center py-12" style="color:var(--text-muted);">아직 등록된 프로젝트가 없습니다.</p>`;
+            return;
+        }
+        el.innerHTML = top.map(p => projectCard(p, true)).join('');
+    } catch { /* 무시 */ }
+}
+
+// ═══════════════════════════════════════════════════════
+//  PROJECTS
+// ═══════════════════════════════════════════════════════
+function pageProjects() {
+    return `
+        <div class="mb-10">
+            <p class="mono text-xs mb-2" style="color:var(--primary);">// ALL PROJECTS</p>
+            <h1 class="text-3xl font-bold mb-2">프로젝트</h1>
+            <p style="color:var(--text-muted);">Java 엔터프라이즈부터 AI 전환까지 — 실전 프로젝트 포트폴리오</p>
+        </div>
+        <div id="projectsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            ${[1,2,3,4,5,6].map(() => `<div class="card p-6 animate-pulse"><div class="h-4 rounded mb-3" style="background:var(--border)"></div><div class="h-3 rounded" style="background:var(--border)"></div></div>`).join('')}
+        </div>`;
+}
+
+function projectCard(p, compact = false) {
+    const tags = p.technologies.split(',').slice(0, compact ? 3 : 5);
+    return `
+    <div class="card p-6 flex flex-col gap-4" style="cursor:default;">
+        <div class="flex items-start justify-between gap-2">
+            <h3 class="font-bold text-base leading-snug" style="color:var(--text);">${p.title}</h3>
+            ${p.link ? `<a href="${p.link}" target="_blank" style="color:var(--primary); flex-shrink:0;" title="링크">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>` : ''}
+        </div>
+        <p class="text-sm leading-relaxed flex-1" style="color:var(--text-muted);">${p.description}</p>
+        <div class="flex flex-wrap gap-1.5">
+            ${tags.map(t => `<span class="tag">${t.trim()}</span>`).join('')}
+        </div>
+    </div>`;
 }
 
 async function loadProjects() {
     try {
-        const response = await fetch(`${API_URL}/projects`);
-        const projects = await response.json();
-
-        const html = projects.map(p => `
-            <div class="glass-card rounded-2xl overflow-hidden">
-                <div class="h-48 bg-gradient-to-br from-blue-100 to-blue-50"></div>
-                <div class="p-6">
-                    <h3 class="font-bold mb-2">${p.title}</h3>
-                    <p class="text-sm mb-4" style="color: #444651;">${p.description}</p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        ${p.technologies.split(',').map(t => `<span class="px-3 py-1 bg-[#d0e1fb] text-[#54647a] rounded-full text-xs font-medium">${t.trim()}</span>`).join('')}
-                    </div>
-                    <a href="${p.link || '#'}" class="inline-block px-4 py-2 rounded-lg text-sm font-medium text-white" style="background: #00236f;">자세히 보기</a>
-                </div>
-            </div>
-        `).join('');
-
-        // Guard: user may have navigated away before this async fetch resolved.
+        const resp = await fetch(`${API_URL}/projects`);
+        const projects = await resp.json();
         const el = document.getElementById('projectsList');
-        if (el) el.innerHTML = html || '<p style="color: #505f76;">프로젝트가 없습니다.</p>';
-    } catch (error) {
-        console.error('프로젝트 로드 오류:', error);
+        if (!el) return;
+        el.innerHTML = projects.length
+            ? projects.map(p => projectCard(p)).join('')
+            : `<p class="col-span-3 text-center py-12" style="color:var(--text-muted);">프로젝트가 없습니다.</p>`;
+    } catch {
         const el = document.getElementById('projectsList');
-        if (el) el.innerHTML = '<p style="color: #505f76;">프로젝트를 로드할 수 없습니다.</p>';
+        if (el) el.innerHTML = `<p style="color:var(--text-muted);">로드 실패</p>`;
     }
 }
 
+// ═══════════════════════════════════════════════════════
+//  ABOUT
+// ═══════════════════════════════════════════════════════
+function pageAbout() {
+    const skills = [
+        { cat: 'Language',  items: ['Java 8~21', 'Python 3.11', 'TypeScript', 'SQL'] },
+        { cat: 'Backend',   items: ['Spring Boot', 'FastAPI', 'SQLAlchemy', 'Pydantic', 'JWT'] },
+        { cat: 'AI / ML',   items: ['LangChain', 'RAG Pipeline', 'OpenAI API', 'HuggingFace', 'Prompt Engineering'] },
+        { cat: 'Frontend',  items: ['Vanilla JS', 'React', 'Tailwind CSS'] },
+        { cat: 'Infra / DB',items: ['Railway', 'Vercel', 'PostgreSQL', 'SQLite', 'Docker', 'GitHub Actions'] },
+        { cat: 'Testing',   items: ['Playwright E2E', 'JUnit', 'pytest'] },
+    ];
+    const career = [
+        { company: 'Landsoft', role: 'Senior Developer · AI 전환 리드', period: '2020 — 현재', highlight: true },
+        { company: 'SI 프로젝트 (공공/금융)', role: 'Java 엔터프라이즈 개발', period: '2018 — 2020', highlight: false },
+        { company: '전자정부 프레임워크 기반 프로젝트', role: 'Full-stack Developer', period: '2016 — 2018', highlight: false },
+    ];
+    return `
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <!-- LEFT: 프로필 -->
+        <div class="flex flex-col gap-6">
+            <div class="card p-8 text-center">
+                <div class="w-24 h-24 mx-auto mb-5 rounded-2xl flex items-center justify-center text-3xl font-extrabold"
+                     style="background:linear-gradient(135deg,#0ea5e9,#6366f1); color:white;">BS</div>
+                <h1 class="text-2xl font-extrabold mb-1">김범수</h1>
+                <p class="text-sm font-semibold mb-3" style="color:var(--primary);">Java 엔터프라이즈 · AI 전환 개발자</p>
+                <div class="flex items-center justify-center gap-2 text-xs" style="color:var(--text-muted);">
+                    <span class="pulse-dot w-2 h-2 rounded-full" style="background:var(--success);"></span>
+                    Available for Projects
+                </div>
+            </div>
+
+            <div class="card p-6">
+                <h3 class="text-sm font-bold mb-4 mono" style="color:var(--primary);">// CONTACT</h3>
+                <div class="space-y-3">
+                    <a href="mailto:bskim@landsoft.co.kr" class="flex items-center gap-3 text-sm transition-colors hover:text-sky-400" style="color:var(--text-muted);">
+                        <span style="color:var(--primary);">✉</span> bskim@landsoft.co.kr
+                    </a>
+                    <a href="https://github.com/bumsuekim" target="_blank" class="flex items-center gap-3 text-sm transition-colors hover:text-sky-400" style="color:var(--text-muted);">
+                        <span style="color:var(--primary);">⌥</span> github.com/bumsuekim
+                    </a>
+                </div>
+            </div>
+
+            <div class="card p-6" style="background:linear-gradient(135deg,rgba(14,165,233,0.1),rgba(99,102,241,0.1));">
+                <h3 class="text-sm font-bold mb-3 mono" style="color:var(--primary);">// SPECIALITY</h3>
+                <ul class="space-y-2 text-sm" style="color:var(--text-muted);">
+                    <li class="flex items-start gap-2"><span style="color:var(--success);">▸</span> Java 레거시 → Python/AI 전환</li>
+                    <li class="flex items-start gap-2"><span style="color:var(--success);">▸</span> LLM 기반 RAG 시스템 구축</li>
+                    <li class="flex items-start gap-2"><span style="color:var(--success);">▸</span> 전자정부/공공 SI 개발</li>
+                    <li class="flex items-start gap-2"><span style="color:var(--success);">▸</span> FastAPI + PostgreSQL 서비스 배포</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- RIGHT: 경력 + 기술 -->
+        <div class="md:col-span-2 flex flex-col gap-6">
+
+            <div class="card p-6">
+                <h3 class="text-sm font-bold mb-5 mono" style="color:var(--primary);">// CAREER</h3>
+                <div class="space-y-5">
+                    ${career.map(c => `
+                    <div class="flex gap-4">
+                        <div class="flex flex-col items-center pt-1">
+                            <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background:${c.highlight ? 'var(--primary)' : 'var(--border)'};"></div>
+                            <div class="w-px flex-1 mt-1" style="background:var(--border); min-height:24px;"></div>
+                        </div>
+                        <div class="pb-4">
+                            <p class="font-bold text-sm ${c.highlight ? '' : ''}" style="color:${c.highlight ? 'var(--primary)' : 'var(--text)'};">${c.company}</p>
+                            <p class="text-sm" style="color:var(--text-muted);">${c.role}</p>
+                            <p class="text-xs mt-0.5 mono" style="color:var(--text-muted);">${c.period}</p>
+                        </div>
+                    </div>`).join('')}
+                </div>
+            </div>
+
+            <div class="card p-6">
+                <h3 class="text-sm font-bold mb-5 mono" style="color:var(--primary);">// TECH STACK</h3>
+                <div class="space-y-4">
+                    ${skills.map(s => `
+                    <div>
+                        <p class="text-xs font-semibold mb-2 uppercase tracking-wider" style="color:var(--text-muted);">${s.cat}</p>
+                        <div class="flex flex-wrap gap-2">
+                            ${s.items.map(t => `<span class="tag">${t}</span>`).join('')}
+                        </div>
+                    </div>`).join('')}
+                </div>
+            </div>
+
+        </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  CONTACT
+// ═══════════════════════════════════════════════════════
+function pageContact() {
+    return `
+    <div class="max-w-2xl mx-auto">
+        <p class="mono text-xs mb-2" style="color:var(--primary);">// CONTACT</p>
+        <h1 class="text-3xl font-bold mb-2">연락하기</h1>
+        <p class="mb-8" style="color:var(--text-muted);">프로젝트 의뢰, AI 전환 컨설팅, 협업 제안은 언제든 환영합니다.</p>
+
+        <div id="contactResult" class="mb-4"></div>
+
+        <form onsubmit="handleContactSubmit(event)" class="card p-8 space-y-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                    <label class="block text-sm font-medium mb-2" style="color:var(--text-muted);">이름</label>
+                    <input type="text" id="contactName" required placeholder="홍길동" class="input-field">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2" style="color:var(--text-muted);">이메일</label>
+                    <input type="email" id="contactEmail" required placeholder="you@example.com" class="input-field">
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2" style="color:var(--text-muted);">제목</label>
+                <input type="text" id="contactSubject" required placeholder="AI 전환 프로젝트 문의" class="input-field">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2" style="color:var(--text-muted);">메시지</label>
+                <textarea id="contactMessage" rows="5" required placeholder="프로젝트 내용을 자유롭게 작성해 주세요." class="input-field" style="resize:vertical;"></textarea>
+            </div>
+            <button type="submit" class="btn-primary w-full text-center text-base py-3">보내기</button>
+        </form>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  ADMIN
+// ═══════════════════════════════════════════════════════
+function pageAdminLogin() {
+    return `
+    <div class="max-w-md mx-auto">
+        <p class="mono text-xs mb-2" style="color:var(--primary);">// ADMIN</p>
+        <h1 class="text-2xl font-bold mb-8">관리자 로그인</h1>
+        <div id="loginError" class="mb-4"></div>
+        <form onsubmit="handleLogin(event)" class="card p-8 space-y-5">
+            <div>
+                <label class="block text-sm font-medium mb-2" style="color:var(--text-muted);">사용자명</label>
+                <input type="text" id="username" placeholder="admin" required class="input-field">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2" style="color:var(--text-muted);">비밀번호</label>
+                <input type="password" id="password" placeholder="••••••••" required class="input-field">
+            </div>
+            <button type="submit" class="btn-primary w-full text-center py-3">로그인</button>
+        </form>
+    </div>`;
+}
+
+function pageAdminDashboard() {
+    return `
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <p class="mono text-xs mb-1" style="color:var(--primary);">// DASHBOARD</p>
+            <h1 class="text-2xl font-bold">관리자</h1>
+        </div>
+        <button onclick="logout()" class="text-sm px-4 py-2 rounded-lg font-medium" style="background:rgba(186,26,26,0.15); color:#f87171; border:1px solid rgba(186,26,26,0.3);">로그아웃</button>
+    </div>
+
+    <div id="adminMessage" class="mb-4"></div>
+
+    <div class="flex gap-4 mb-8" style="border-bottom:1px solid var(--border);">
+        <button onclick="adminTab='password'; render()" class="pb-3 text-sm font-medium transition-colors"
+            style="color:${adminTab==='password'?'var(--primary)':'var(--text-muted)'}; border-bottom:${adminTab==='password'?'2px solid var(--primary)':'2px solid transparent'};">
+            비밀번호 변경
+        </button>
+        <button onclick="adminTab='projects'; render()" class="pb-3 text-sm font-medium transition-colors"
+            style="color:${adminTab==='projects'?'var(--primary)':'var(--text-muted)'}; border-bottom:${adminTab==='projects'?'2px solid var(--primary)':'2px solid transparent'};">
+            프로젝트 관리
+        </button>
+    </div>
+
+    ${adminTab === 'password' ? `
+    <form onsubmit="handleChangePassword(event)" class="max-w-md card p-8 space-y-5">
+        <div>
+            <label class="block text-sm font-medium mb-2" style="color:var(--text-muted);">현재 비밀번호</label>
+            <input type="password" id="currentPassword" required class="input-field">
+        </div>
+        <div>
+            <label class="block text-sm font-medium mb-2" style="color:var(--text-muted);">새 비밀번호</label>
+            <input type="password" id="newPassword" required class="input-field">
+        </div>
+        <div>
+            <label class="block text-sm font-medium mb-2" style="color:var(--text-muted);">새 비밀번호 확인</label>
+            <input type="password" id="confirmPassword" required class="input-field">
+        </div>
+        <button type="submit" class="btn-primary w-full text-center py-3">변경</button>
+    </form>` : `
+    <div class="space-y-8">
+        <div class="card p-6">
+            <h2 class="font-bold mb-5 text-sm mono" style="color:var(--primary);">// ADD PROJECT</h2>
+            <form onsubmit="handleAddProject(event)" class="space-y-4">
+                <input type="text" id="projectTitle" placeholder="프로젝트 제목" required class="input-field">
+                <textarea id="projectDesc" placeholder="설명" rows="3" required class="input-field" style="resize:vertical;"></textarea>
+                <input type="text" id="projectTech" placeholder="기술스택 (쉼표로 구분)" required class="input-field">
+                <input type="url" id="projectLink" placeholder="링크 (선택)" class="input-field">
+                <button type="submit" class="btn-primary px-6 py-2 text-sm">추가</button>
+            </form>
+        </div>
+        <div>
+            <h2 class="font-bold mb-4 text-sm mono" style="color:var(--primary);">// PROJECT LIST</h2>
+            <div id="adminProjectsList" class="space-y-3">
+                <p style="color:var(--text-muted);">로딩 중...</p>
+            </div>
+        </div>
+    </div>`}`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  API 핸들러
+// ═══════════════════════════════════════════════════════
 async function loadAdminProjects() {
     try {
-        const response = await fetch(`${API_URL}/projects`);
-        const projects = await response.json();
-
-        const html = projects.map(p => `
-            <div class="glass-card p-6 rounded-2xl flex justify-between items-start">
-                <div>
-                    <h3 class="font-bold">${p.title}</h3>
-                    <p class="text-sm" style="color: #444651;">${p.description}</p>
-                    <p class="text-xs mt-2" style="color: #505f76;">${p.technologies}</p>
-                </div>
-                <button onclick="deleteProject(${p.id})" class="px-3 py-2 rounded-lg text-sm font-medium text-white" style="background: #ba1a1a;">삭제</button>
-            </div>
-        `).join('');
-
+        const resp = await fetch(`${API_URL}/projects`);
+        const projects = await resp.json();
         const el = document.getElementById('adminProjectsList');
-        if (el) el.innerHTML = html || '<p style="color: #505f76;">프로젝트가 없습니다.</p>';
-    } catch (error) {
-        console.error('프로젝트 로드 오류:', error);
-    }
+        if (!el) return;
+        el.innerHTML = projects.map(p => `
+            <div class="card p-5 flex justify-between items-start gap-4">
+                <div class="flex-1">
+                    <h3 class="font-bold text-sm mb-1">${p.title}</h3>
+                    <p class="text-xs mb-2" style="color:var(--text-muted);">${p.description}</p>
+                    <p class="text-xs mono" style="color:var(--primary);">${p.technologies}</p>
+                </div>
+                <button onclick="deleteProject(${p.id})" class="text-xs px-3 py-1.5 rounded-lg flex-shrink-0"
+                    style="background:rgba(186,26,26,0.15); color:#f87171; border:1px solid rgba(186,26,26,0.3);">삭제</button>
+            </div>`).join('') || `<p style="color:var(--text-muted);">프로젝트가 없습니다.</p>`;
+    } catch { /* 무시 */ }
 }
-
-// ===== 이벤트 핸들러 =====
 
 async function handleLogin(e) {
     e.preventDefault();
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
     try {
-        const response = await fetch(`${API_URL}/admin/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
+        const resp = await fetch(`${API_URL}/admin/login`, {
+            method: 'POST', headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ username: document.getElementById('username').value, password: document.getElementById('password').value })
         });
-
-        const data = await response.json();
-        if (response.ok) {
-            isLoggedIn = true;
-            adminName = username;
+        const data = await resp.json();
+        if (resp.ok) {
+            isLoggedIn = true; adminName = document.getElementById('username').value;
             authToken = data.access_token;
             localStorage.setItem('auth_token', authToken);
-            localStorage.setItem('admin_name', username);
-            adminTab = 'password';
-            currentPage = 'admin';
-            render();
+            localStorage.setItem('admin_name', adminName);
+            adminTab = 'password'; currentPage = 'admin'; render();
         } else {
-            document.getElementById('loginError').innerHTML = `<div style="padding: 12px; background: rgba(186, 26, 26, 0.1); border-radius: 8px; color: #ba1a1a; font-size: 14px;">✗ ${data.detail || '로그인 실패'}</div>`;
+            document.getElementById('loginError').innerHTML = alert_html('✗ ' + (data.detail || '로그인 실패'), 'error');
         }
-    } catch (error) {
-        document.getElementById('loginError').innerHTML = `<div style="padding: 12px; background: rgba(186, 26, 26, 0.1); border-radius: 8px; color: #ba1a1a; font-size: 14px;">✗ 오류: ${error.message}</div>`;
+    } catch (err) {
+        document.getElementById('loginError').innerHTML = alert_html('✗ ' + err.message, 'error');
     }
 }
 
 async function handleChangePassword(e) {
     e.preventDefault();
-    const current = document.getElementById('currentPassword').value;
-    const newPass = document.getElementById('newPassword').value;
-    const confirm = document.getElementById('confirmPassword').value;
-
-    if (newPass !== confirm) {
-        showAdminMessage('새 비밀번호가 일치하지 않습니다.', 'error');
-        return;
-    }
-
+    const np = document.getElementById('newPassword').value;
+    if (np !== document.getElementById('confirmPassword').value) { showAdminMessage('새 비밀번호가 일치하지 않습니다.', 'error'); return; }
     try {
-        const response = await fetch(`${API_URL}/admin/change-password`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authToken}`
-            },
-            body: JSON.stringify({ current_password: current, new_password: newPass })
+        const resp = await fetch(`${API_URL}/admin/change-password`, {
+            method: 'POST', headers: {'Content-Type':'application/json','Authorization':'Bearer '+authToken},
+            body: JSON.stringify({ current_password: document.getElementById('currentPassword').value, new_password: np })
         });
-
-        const data = await response.json();
-        if (response.ok) {
-            showAdminMessage('✓ 비밀번호가 변경되었습니다.', 'success');
-            document.getElementById('currentPassword').value = '';
-            document.getElementById('newPassword').value = '';
-            document.getElementById('confirmPassword').value = '';
-        } else {
-            showAdminMessage('✗ ' + (data.detail || '비밀번호 변경 실패'), 'error');
-        }
-    } catch (error) {
-        showAdminMessage('✗ 오류: ' + error.message, 'error');
-    }
+        const data = await resp.json();
+        resp.ok ? showAdminMessage('✓ 비밀번호가 변경되었습니다.', 'success') : showAdminMessage('✗ ' + (data.detail || '실패'), 'error');
+    } catch (err) { showAdminMessage('✗ ' + err.message, 'error'); }
 }
 
 async function handleAddProject(e) {
     e.preventDefault();
-    const title = document.getElementById('projectTitle').value;
-    const description = document.getElementById('projectDesc').value;
-    const technologies = document.getElementById('projectTech').value;
-    const link = document.getElementById('projectLink').value;
-
     try {
-        const response = await fetch(`${API_URL}/projects`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authToken}`
-            },
-            body: JSON.stringify({ title, description, technologies, link, image_url: '' })
+        const resp = await fetch(`${API_URL}/projects`, {
+            method: 'POST', headers: {'Content-Type':'application/json','Authorization':'Bearer '+authToken},
+            body: JSON.stringify({
+                title: document.getElementById('projectTitle').value,
+                description: document.getElementById('projectDesc').value,
+                technologies: document.getElementById('projectTech').value,
+                link: document.getElementById('projectLink').value,
+                image_url: ''
+            })
         });
-
-        if (response.ok) {
-            showAdminMessage('✓ 프로젝트가 추가되었습니다.', 'success');
-            document.getElementById('projectTitle').value = '';
-            document.getElementById('projectDesc').value = '';
-            document.getElementById('projectTech').value = '';
-            document.getElementById('projectLink').value = '';
+        if (resp.ok) {
+            showAdminMessage('✓ 추가되었습니다.', 'success');
+            ['projectTitle','projectDesc','projectTech','projectLink'].forEach(id => { const f=document.getElementById(id); if(f) f.value=''; });
             loadAdminProjects();
-        } else {
-            showAdminMessage('✗ 프로젝트 추가 실패', 'error');
-        }
-    } catch (error) {
-        showAdminMessage('✗ 오류: ' + error.message, 'error');
-    }
+        } else { showAdminMessage('✗ 추가 실패', 'error'); }
+    } catch (err) { showAdminMessage('✗ ' + err.message, 'error'); }
 }
 
 async function deleteProject(id) {
-    if (!confirm('정말 삭제하시겠습니까?')) return;
-
+    if (!confirm('삭제하시겠습니까?')) return;
     try {
-        const response = await fetch(`${API_URL}/projects/${id}`, {
-            method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${authToken}` }
-        });
-
-        if (response.ok) {
-            showAdminMessage('✓ 프로젝트가 삭제되었습니다.', 'success');
-            loadAdminProjects();
-        }
-    } catch (error) {
-        showAdminMessage('✗ 오류', 'error');
-    }
+        const resp = await fetch(`${API_URL}/projects/${id}`, { method:'DELETE', headers:{'Authorization':'Bearer '+authToken} });
+        if (resp.ok) { showAdminMessage('✓ 삭제되었습니다.', 'success'); loadAdminProjects(); }
+    } catch { /* 무시 */ }
 }
 
 async function handleContactSubmit(e) {
     e.preventDefault();
-    const name = document.getElementById('contactName').value;
-    const email = document.getElementById('contactEmail').value;
-    const subject = document.getElementById('contactSubject').value;
-    const message = document.getElementById('contactMessage').value;
-
     try {
-        const response = await fetch(`${API_URL}/contact`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, subject, message })
+        const resp = await fetch(`${API_URL}/contact`, {
+            method: 'POST', headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+                name: document.getElementById('contactName').value,
+                email: document.getElementById('contactEmail').value,
+                subject: document.getElementById('contactSubject').value,
+                message: document.getElementById('contactMessage').value
+            })
         });
-
-        if (response.ok) {
-            const result = document.getElementById('contactResult');
-            if (result) result.innerHTML = '<div style="padding: 12px; background: rgba(0, 35, 111, 0.1); border-radius: 8px; color: #00236f;">✓ 메시지가 전송되었습니다.</div>';
+        if (resp.ok) {
+            const r = document.getElementById('contactResult');
+            if (r) r.innerHTML = alert_html('✓ 메시지가 전송되었습니다.', 'success');
             setTimeout(() => {
-                // Guard: user may have navigated away from the contact page.
-                ['contactName', 'contactEmail', 'contactSubject', 'contactMessage'].forEach(id => {
-                    const f = document.getElementById(id);
-                    if (f) f.value = '';
-                });
-                const r = document.getElementById('contactResult');
-                if (r) r.innerHTML = '';
+                ['contactName','contactEmail','contactSubject','contactMessage'].forEach(id => { const f=document.getElementById(id); if(f) f.value=''; });
+                const r2 = document.getElementById('contactResult');
+                if (r2) r2.innerHTML = '';
             }, 2000);
         }
-    } catch (error) {
-        console.error('오류:', error);
-    }
+    } catch (err) { console.error(err); }
 }
 
 function logout() {
-    isLoggedIn = false;
-    adminName = null;
-    authToken = null;
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('admin_name');
-    currentPage = 'home';
-    render();
+    isLoggedIn = false; adminName = null; authToken = null;
+    localStorage.removeItem('auth_token'); localStorage.removeItem('admin_name');
+    currentPage = 'home'; render();
 }
 
 let adminMessageTimer = null;
 function showAdminMessage(msg, type) {
-    const msgDiv = document.getElementById('adminMessage');
-    if (!msgDiv) return;
-    // Cancel any pending clear from a previous message so a stale timer
-    // doesn't wipe this newer message early.
+    const el = document.getElementById('adminMessage');
+    if (!el) return;
     if (adminMessageTimer) clearTimeout(adminMessageTimer);
-    const bgColor = type === 'success' ? 'rgba(0, 35, 111, 0.1)' : 'rgba(186, 26, 26, 0.1)';
-    const textColor = type === 'success' ? '#00236f' : '#ba1a1a';
-    msgDiv.innerHTML = `<div style="padding: 12px; background: ${bgColor}; border-radius: 8px; color: ${textColor};">${msg}</div>`;
-    adminMessageTimer = setTimeout(() => {
-        const d = document.getElementById('adminMessage');
-        if (d) d.innerHTML = '';
-    }, 3000);
+    el.innerHTML = alert_html(msg, type);
+    adminMessageTimer = setTimeout(() => { const d=document.getElementById('adminMessage'); if(d) d.innerHTML=''; }, 3000);
 }
 
-let adminTab = 'password';
+function alert_html(msg, type) {
+    const ok = type === 'success';
+    return `<div style="padding:12px 16px; border-radius:10px; font-size:14px;
+        background:${ok?'rgba(52,211,153,0.1)':'rgba(186,26,26,0.1)'};
+        border:1px solid ${ok?'rgba(52,211,153,0.3)':'rgba(186,26,26,0.3)'};
+        color:${ok?'var(--success)':'#f87171'};">${msg}</div>`;
+}

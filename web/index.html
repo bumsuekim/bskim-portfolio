@@ -3,35 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>김범수 · 포트폴리오</title>
+    <title>김범수 · AI 전환 개발자</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00236f;
-            --secondary: #505f76;
-            --surface: #faf8ff;
-            --on-surface: #1a1b21;
-            --on-surface-variant: #444651;
-            --error: #ba1a1a;
+            --bg-base:    #070c18;
+            --bg-card:    rgba(13, 22, 41, 0.85);
+            --bg-surface: #0d1629;
+            --border:     rgba(56, 189, 248, 0.15);
+            --primary:    #38bdf8;
+            --primary-glow: rgba(56, 189, 248, 0.25);
+            --secondary:  #818cf8;
+            --accent:     #06b6d4;
+            --text:       #e2e8f0;
+            --text-muted: #94a3b8;
+            --success:    #34d399;
         }
-        body { font-family: Inter, sans-serif; }
-        .glass-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(226,232,240,0.5); }
-        .hero-bg { background: linear-gradient(135deg, #e8e8f5 0%, #dde0f0 40%, #e4e8f8 100%); }
-        .nav-active { color: #00236f !important; font-weight: 600; }
-        .stat-num { font-size: 2rem; font-weight: 800; color: #00236f; }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-base);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        /* ── 글로우 카드 ── */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 0 24px var(--primary-glow);
+        }
+        /* ── 히어로 그라디언트 배경 ── */
+        .hero-bg {
+            background:
+                radial-gradient(ellipse 80% 60% at 50% -10%, rgba(56,189,248,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 90% 80%, rgba(129,140,248,0.1) 0%, transparent 50%),
+                var(--bg-base);
+        }
+        /* ── 그리드 패턴 ── */
+        .grid-pattern {
+            background-image:
+                linear-gradient(rgba(56,189,248,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56,189,248,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        /* ── 뱃지 ── */
+        .badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 4px 12px; border-radius: 999px;
+            font-size: 12px; font-weight: 500;
+            background: rgba(56,189,248,0.1);
+            border: 1px solid rgba(56,189,248,0.25);
+            color: var(--primary);
+        }
+        /* ── 버튼 ── */
+        .btn-primary {
+            background: linear-gradient(135deg, #0ea5e9, #6366f1);
+            color: white; font-weight: 700;
+            border-radius: 999px; padding: 12px 28px;
+            transition: opacity 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary:hover { opacity: 0.9; box-shadow: 0 0 20px rgba(56,189,248,0.4); }
+        .btn-outline {
+            border: 1px solid var(--border); color: var(--primary);
+            border-radius: 999px; padding: 11px 28px; font-weight: 600;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .btn-outline:hover { border-color: var(--primary); background: rgba(56,189,248,0.08); }
+        /* ── 태그 ── */
+        .tag {
+            display: inline-block;
+            padding: 3px 10px; border-radius: 6px;
+            font-size: 11px; font-weight: 500;
+            background: rgba(56,189,248,0.08);
+            border: 1px solid rgba(56,189,248,0.2);
+            color: var(--primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* ── 네비 ── */
+        .nav-link { color: var(--text-muted); font-size: 14px; font-weight: 500; transition: color 0.2s; }
+        .nav-link:hover, .nav-link.active { color: var(--primary); }
+        /* ── 통계 숫자 ── */
+        .stat-num {
+            font-size: 2.2rem; font-weight: 800;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        /* ── 스크롤바 ── */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: rgba(56,189,248,0.3); border-radius: 3px; }
+        /* ── 입력 필드 ── */
+        .input-field {
+            width: 100%; padding: 10px 14px;
+            background: rgba(13,22,41,0.8);
+            border: 1px solid var(--border);
+            border-radius: 10px; color: var(--text);
+            font-size: 14px; outline: none; transition: border-color 0.2s;
+        }
+        .input-field:focus { border-color: var(--primary); }
+        .input-field::placeholder { color: var(--text-muted); }
+        /* ── 구분선 ── */
+        hr.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+        /* ── 터미널 텍스트 ── */
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        /* ── 펄스 점 ── */
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        .pulse-dot { animation: pulse 2s infinite; }
     </style>
 </head>
-<body class="bg-[#faf8ff] text-[#1a1b21]">
+<body>
 
     <!-- NAV -->
-    <nav class="fixed top-0 w-full z-50 border-b" style="background: rgba(250,248,255,0.92); backdrop-filter: blur(12px); border-color: rgba(197,197,211,0.25);">
+    <nav class="fixed top-0 w-full z-50" style="background: rgba(7,12,24,0.9); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border);">
         <div class="flex justify-between items-center h-16 px-6 max-w-6xl mx-auto">
-            <button onclick="nav('home')" class="font-bold text-base tracking-widest uppercase" style="color: #1a1b21;">BSKIM</button>
+            <button onclick="nav('home')" class="mono font-bold text-sm tracking-widest" style="color: var(--primary);">
+                &lt;bskim /&gt;
+            </button>
             <div class="hidden md:flex gap-8 items-center">
-                <button onclick="nav('home')" id="nav-home" class="text-sm font-medium transition-colors" style="color: #1a1b21;">Home</button>
-                <button onclick="nav('projects')" id="nav-projects" class="text-sm font-medium transition-colors" style="color: var(--secondary);">Projects</button>
-                <button onclick="nav('about')" id="nav-about" class="text-sm font-medium transition-colors" style="color: var(--secondary);">About</button>
+                <button onclick="nav('home')" id="nav-home" class="nav-link active">Home</button>
+                <button onclick="nav('projects')" id="nav-projects" class="nav-link">Projects</button>
+                <button onclick="nav('about')" id="nav-about" class="nav-link">About</button>
             </div>
             <div id="authButtons"></div>
         </div>
@@ -40,19 +138,19 @@
     <!-- PAGE CONTENT -->
     <div id="content" class="pt-16"></div>
 
-    <!-- FOOTER (홈 페이지에서만 보임) -->
-    <footer id="site-footer" class="w-full py-8 border-t" style="background:#fff; border-color: rgba(197,197,211,0.3);">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-3 px-6 max-w-6xl mx-auto">
-            <span class="font-bold tracking-widest uppercase text-sm">BSKIM</span>
+    <!-- FOOTER -->
+    <footer style="background: var(--bg-surface); border-top: 1px solid var(--border);">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-3 px-6 py-8 max-w-6xl mx-auto">
+            <span class="mono text-sm font-bold" style="color: var(--primary);">&lt;bskim /&gt;</span>
             <div class="flex gap-6">
-                <a href="https://github.com/bumsuekim" target="_blank" class="text-sm transition-colors hover:text-[#00236f]" style="color: var(--secondary);">GitHub</a>
-                <a href="mailto:bskim@landsoft.co.kr" class="text-sm transition-colors hover:text-[#00236f]" style="color: var(--secondary);">Email</a>
+                <a href="https://github.com/bumsuekim" target="_blank" class="text-sm transition-colors hover:text-sky-400" style="color: var(--text-muted);">GitHub</a>
+                <a href="mailto:bskim@landsoft.co.kr" class="text-sm transition-colors hover:text-sky-400" style="color: var(--text-muted);">Email</a>
             </div>
-            <p class="text-sm" style="color: var(--secondary);">© 2025 김범수</p>
+            <p class="text-sm mono" style="color: var(--text-muted);">© 2025 김범수</p>
         </div>
     </footer>
 
-    <script src="config.js"></script>
-    <script src="app.js"></script>
+    <script src="config.js?v=2"></script>
+    <script src="app.js?v=2"></script>
 </body>
 </html>
